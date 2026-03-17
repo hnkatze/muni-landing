@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import ContactInfo from '../components/ContactInfo.astro';
+---
+
+<Layout title="Contacto | Bonito Oriental" description="Ponte en contacto con la Municipalidad de Bonito Oriental.">
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
+      <div class="md:col-span-2">
+        <ContactForm />
+      </div>
+      <div>
+        <ContactInfo />
+      </div>
+    </div>
+  </section>
+</Layout>
