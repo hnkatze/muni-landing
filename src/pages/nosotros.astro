@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import bonitoMap from '../assets/Bonitomap.svg';
+import MissionVision from '../components/MissionVision.astro';
+import DownloadButton from '../components/DownloadButton.astro';
+---
+
+<Layout title="Nosotros | Bonito Oriental" description="Conoce la historia, mision y vision de la Municipalidad de Bonito Oriental.">
+  {/* Header Banner */}
+  <section class="bg-gradient-to-br from-gov-navy via-gov-navy-light to-gov-teal py-20 px-4">
+    <div class="mx-auto max-w-7xl text-center">
+      <h1 class="text-4xl font-bold text-white md:text-5xl lg:text-7xl">Sobre Nosotros</h1>
+      <p class="mt-4 text-lg text-white/70">
+        Aprende mas sobre nuestro viaje, nuestros valores y nuestras aspiraciones
+      </p>
+      <Image
+        src={bonitoMap}
+        alt="Mapa de Bonito Oriental"
+        class="mx-auto mt-8 max-w-xs md:max-w-md drop-shadow-lg brightness-0 invert"
+        width={400}
+        height={300}
+      />
+    </div>
+  </section>
+
+  <MissionVision />
+
+  {/* PDF Downloads */}
+  <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap justify-center gap-4">
+      <DownloadButton label="Descargar Mision y Vision" href="/doc/Mision Y Vision.pdf" />
+      <DownloadButton label="Descargar Historia Municipal" href="/doc/HISTORIA.pdf" />
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,19 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  label: string;
+  href: string;
+}
+
+const { label, href } = Astro.props;
+---
+
+<a
+  href={href}
+  download
+  class="inline-flex items-center gap-2 rounded-full border-2 border-gov-teal px-6 py-2.5 text-sm font-medium text-gov-teal hover:bg-gov-teal hover:text-white transition-all duration-300"
+>
+  <Icon name="lucide:download" class="h-5 w-5" />
+  {label}
+</a>
