@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --color-gov-navy: #003366;
+  --color-gov-navy-light: #004B87;
+  --color-gov-teal: #0B7A9F;
+  --color-muni-green: #2ECC71;
+  --color-muni-green-dark: #27AE60;
+  --color-muni-gold: #D4AF37;
+  --color-text-primary: #1A1A2E;
+  --color-text-secondary: #4A4A5C;
+  --color-text-tertiary: #8B8B9D;
+  --color-bg-subtle: #F8F9FB;
+}

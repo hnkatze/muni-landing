@@ -1,0 +1,129 @@
+{
+  "historia_municipalidad": [
+    {
+      "fecha": "12 de junio de 1987",
+      "eventos": "Nombramiento de la primera corporación municipal encabezada por Heriberto Rodríguez como alcalde municipal.",
+      "alcalde": "Heriberto Rodríguez",
+      "regidores": [
+        "Reynaldo Reyes Galán",
+        "Juan Pablo Moradel",
+        "José Isabel Villalobos",
+        "Santos Pérez",
+        "Jeremías Cruz Hernández",
+        "Dora Romelia Suazo",
+        "Arnulfo Velásquez Mejía"
+      ]
+    },
+    {
+      "fecha": "1989",
+      "eventos": "Primera elección de alcalde municipal. Rafael Leonardo Callejas es electo presidente de la república, resultando electo como primer alcalde Tulio Turcios Romero.",
+      "alcalde": "Tulio Turcios Romero",
+      "regidores": [
+        "Francisco Díaz",
+        "Alexis García",
+        "Virgilio Hernández",
+        "Amado Flores",
+        "Ramona De Velásquez",
+        "Genaro Díaz",
+        "Estela Rodríguez"
+      ]
+    },
+    {
+      "fecha": "1994-1998",
+      "alcalde": "Florinda Galo",
+      "eventos": "Nueva elección de presidente de la república. Heriberto Rodríguez es nuevamente electo, con la siguiente corporación:",
+      "regidores": [
+        "Sofía López",
+        "Rufino Montoya",
+        "Martina Chávez",
+        "Arnulfo Velásquez",
+        "Ramón Alfredo Cerrato",
+        "Carlos Sosa Medina",
+        "Emérito Velásquez"
+      ],
+      "presidencia_edificio_municipal": "Carlos Roberto Reina"
+    },
+    {
+      "fecha": "1998-2002",
+      "eventos": "Nueva elección de presidente de la república. Carlos Roberto Flores es electo, y Florinda Galo De Paz es electa como alcaldesa, con la siguiente corporación:",
+      "alcalde": "Florinda Galo De Paz",
+      "regidores": [
+        "Miguel Méndez",
+        "Amado Ramírez Pineda",
+        "Marco Antonio Velásquez",
+        "Cleofes Morales Vigil",
+        "Stanley Sánchez Flores",
+        "Ovegildo Alvarenga Ayala",
+        "Mario Urbina Quiroz"
+      ]
+    },
+    {
+      "fecha": "2002-2006",
+      "eventos": "Nueva elección de presidente de la república. Ricardo Maduro es electo, y Ovegildo Alvarenga Ayala es electo como alcalde, con la siguiente corporación:",
+      "alcalde": "Ovegildo Alvarenga Ayala",
+      "vice_alcalde": "Reynaldo Reyes Galán",
+      "regidores": [
+        "Florinda Galo Sorto",
+        "Cecil Antonio Turcios",
+        "Coritza Moradel",
+        "Ángel David Antúnez",
+        "Pablo Meza",
+        "Olivio Soto",
+        "Mauro Games",
+        "Cesar Augusto Cárcamo"
+      ],
+      "logros": "Habilitación de calles en diferentes comunidades, compra de terreno para el mercado municipal."
+    },
+    {
+      "fecha": "2006-2010",
+      "eventos": "Nueva elección de presidente de la república. José Manuel Zelaya es electo, y Clemente Cardona García es electo como alcalde, con la siguiente corporación:",
+      "alcalde": "Clemente Cardona García",
+      "vice_alcalde": "Ramón López",
+      "regidores": [
+        "Ovegildo Alvarenga Ayala",
+        "Isabel Erazo",
+        "Miguel Méndez",
+        "Roger Leonel Cartagena",
+        "Tirsa Concepción Hernández",
+        "Samuel Ventura",
+        "Arnulfo Velásquez",
+        "José Dolores Bejarano"
+      ],
+      "logros": "Construcción del boulevard Clemente Cardona, inicio de la construcción del parque municipal."
+    },
+    {
+      "fecha": "2010-2014",
+      "eventos": "Nueva elección de presidente de la república. Porfirio Lobo Sosa es electo, y Ángel David Antúnez Osorio es electo como alcalde, con la siguiente corporación:",
+      "alcalde": "Ángel David Antúnez Osorio",
+      "vice_alcalde": "Mayra Leticia Romero",
+      "regidores": [
+        "Jorge Roberto Paz",
+        "Mario Alberto Martínez",
+        "Héctor Paz Santos",
+        "Bernardo Stanly Calderón Marroquín",
+        "Clemente Cardona García",
+        "Adris Isabel Herrera Escobar",
+        "Arturo Barahona Rodríguez",
+        "Julio Alberto Matute Chirinos"
+      ],
+      "logros": "Construcción del mercado municipal, culminación del parque municipal, mejoras en infraestructura vial."
+    },
+    {
+      "fecha": "2014-2018",
+      "eventos": "Nueva elección de presidente de la república. Juan Orlando Hernández es electo, y Clemente Cardona García es reelecto como alcalde, con la siguiente corporación:",
+      "alcalde": "Clemente Cardona García",
+      "vice_alcaldesa": "Francis Adelina Amaya Escoto",
+      "regidores": [
+        "Ángel David Antúnez",
+        "Nanci Ondina Bardales",
+        "Julio Alberto Matute",
+        "Jorge Roberto Paz",
+        "Reina Margarita Oliva",
+        "Felicito Guardado",
+        "Isabel Erazo",
+        "Adelmo Sabillon"
+      ],
+      "logros": "Empoderamiento ciudadano a través del presupuesto participativo, enlace efectivo con autoridades municipales y policiales."
+    }
+  ]
+}
