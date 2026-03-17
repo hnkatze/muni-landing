@@ -28,3 +28,9 @@ firebase-debug.log
 
 # jetbrains setting folder
 .idea/
+
+# vscode
+.vscode/
+
+# openspec (SDD artifacts)
+openspec/
