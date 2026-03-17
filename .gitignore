@@ -20,5 +20,11 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# firebase
+firebase-debug.log
+
+# claude
+.claude/
+
 # jetbrains setting folder
 .idea/
