@@ -1,0 +1,110 @@
+---
+import { navLinks } from '../data/navigation';
+---
+
+<nav id="main-nav" class="sticky top-0 z-50 bg-gov-navy/95 backdrop-blur-md shadow-lg">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-20 items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <span class="sr-only">Bonito Oriental</span>
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-muni-gold text-gov-navy font-bold text-sm">BO</div>
+        <div>
+          <p class="text-sm font-semibold text-white">Municipalidad</p>
+          <p class="text-xs text-muni-gold">Bonito Oriental</p>
+        </div>
+      </a>
+
+      {/* Desktop nav */}
+      <ul class="hidden lg:flex items-center gap-8">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="text-sm font-medium text-white/80 hover:text-muni-gold transition-colors duration-200"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* Hamburger button */}
+      <button
+        id="menu-toggle"
+        type="button"
+        class="lg:hidden p-2 text-white/80 hover:text-white"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+      >
+        <svg id="icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <svg id="icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  {/* Mobile menu */}
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gov-navy-light bg-gov-navy">
+    <ul class="space-y-1 px-4 py-3">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="mobile-link block rounded-md px-3 py-2 text-base font-medium text-white/80 hover:bg-gov-navy-light hover:text-muni-gold transition-colors"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const toggle = document.getElementById('menu-toggle')!;
+  const menu = document.getElementById('mobile-menu')!;
+  const iconOpen = document.getElementById('icon-open')!;
+  const iconClose = document.getElementById('icon-close')!;
+  const nav = document.getElementById('main-nav')!;
+
+  // Mobile menu toggle
+  toggle.addEventListener('click', () => {
+    const isOpen = !menu.classList.contains('hidden');
+    menu.classList.toggle('hidden');
+    iconOpen.classList.toggle('hidden');
+    iconClose.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  document.querySelectorAll('.mobile-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // GSAP: hide/show nav on scroll direction
+  let lastScrollY = 0;
+  ScrollTrigger.create({
+    onUpdate: () => {
+      const scrollY = window.scrollY;
+      if (scrollY < 100) {
+        gsap.to(nav, { y: 0, duration: 0.3, ease: 'power2.out' });
+      } else if (scrollY > lastScrollY) {
+        gsap.to(nav, { y: -100, duration: 0.3, ease: 'power2.inOut' });
+      } else {
+        gsap.to(nav, { y: 0, duration: 0.3, ease: 'power2.inOut' });
+      }
+      lastScrollY = scrollY;
+    },
+  });
+</script>
