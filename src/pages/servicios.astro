@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ServiceSection from '../components/ServiceSection.astro';
+import RequirementsModal from '../components/RequirementsModal.astro';
+import { serviceDepartments } from '../data/servicios';
+---
+
+<Layout title="Servicios | Bonito Oriental" description="Conoce los servicios que ofrece la Municipalidad de Bonito Oriental.">
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <h1 class="text-center text-3xl font-bold text-gov-navy md:text-5xl">Nuestros Servicios</h1>
+    <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-muni-gold"></div>
+
+    {serviceDepartments.map((dept) => (
+      <ServiceSection
+        title={dept.title}
+        description={dept.description}
+        icon={dept.icon}
+        subServices={dept.subServices}
+      />
+    ))}
+  </section>
+
+  <RequirementsModal />
+</Layout>
