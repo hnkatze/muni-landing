@@ -11,30 +11,16 @@ interface Props {
 const { title, description, icon, href } = Astro.props;
 ---
 
-<div class="service-card flex w-3/4 flex-col items-center rounded-2xl bg-white p-6 shadow-lg border border-gray-100 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 md:w-1/4">
-  <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-gov-teal/10">
-    <Icon name={icon} class="h-10 w-10 text-gov-teal" />
+<div class="tilt-card reveal flex w-full flex-col items-center rounded-3xl bg-white p-8 border border-border-warm shadow-sm transition-shadow duration-300 hover:shadow-xl hover:shadow-gov-navy/8">
+  <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-bg-warm">
+    <Icon name={icon} class="h-8 w-8 text-gov-navy" />
   </div>
-  <h3 class="mt-4 text-lg font-bold text-gov-navy">{title}</h3>
-  <p class="mt-2 text-center text-sm text-text-secondary">{description}</p>
+  <h3 class="mt-5 text-lg font-bold text-gov-navy">{title}</h3>
+  <p class="mt-2 flex-1 text-center text-sm text-text-secondary leading-relaxed">{description}</p>
   <a
     href={href}
-    class="mt-4 inline-block rounded-full bg-gov-teal px-6 py-2 text-sm font-medium text-white hover:bg-gov-navy transition-colors duration-200"
+    class="mt-5 inline-block rounded-full bg-gov-navy px-6 py-2 text-sm font-medium text-white hover:bg-gov-navy-light transition-colors duration-200"
   >
     Ver Mas
   </a>
 </div>
-
-<script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  const cards = document.querySelectorAll('.service-card');
-  if (cards.length) {
-    gsap.from(cards, {
-      scrollTrigger: { trigger: cards[0].parentElement, start: 'top 85%' },
-      y: 60, scale: 0.95, stagger: 0.12, duration: 0.8, ease: 'power2.out',
-    });
-  }
-</script>

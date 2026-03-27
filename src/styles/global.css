@@ -1,15 +1,137 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
-  --color-gov-navy: #003366;
-  --color-gov-navy-light: #004B87;
-  --color-gov-teal: #0B7A9F;
-  --color-muni-green: #2ECC71;
-  --color-muni-green-dark: #27AE60;
-  --color-muni-gold: #D4AF37;
-  --color-text-primary: #1A1A2E;
-  --color-text-secondary: #4A4A5C;
-  --color-text-tertiary: #8B8B9D;
-  --color-bg-subtle: #F8F9FB;
+  --font-sans: 'DM Sans', sans-serif;
+
+  /* Cielo y Tierra — Honduras palette */
+  --color-gov-navy: #0F4C81;
+  --color-gov-navy-light: #1A6DB5;
+  --color-gov-teal: #2E86C1;
+  --color-muni-green: #3D9B5E;
+  --color-muni-green-dark: #2E7D4A;
+  --color-muni-gold: #E8A838;
+  --color-muni-gold-soft: #F4D98C;
+  --color-earth: #8B6F47;
+  --color-earth-light: #A6896A;
+
+  --color-text-primary: #1C2B3A;
+  --color-text-secondary: #5A6B7D;
+  --color-text-tertiary: #94A3B8;
+  --color-bg-subtle: #FAFAF7;
+  --color-bg-warm: #F5F1EB;
+  --color-border-warm: #E2DDD4;
 }
+
+/* ── Scroll-driven reveal animations ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.reveal {
+  opacity: 0;
+  animation: fade-up 0.6s ease-out forwards;
+  animation-play-state: paused;
+}
+.reveal.visible { animation-play-state: running; }
+
+.reveal-left {
+  opacity: 0;
+  animation: slide-in-left 0.7s ease-out forwards;
+  animation-play-state: paused;
+}
+.reveal-left.visible { animation-play-state: running; }
+
+.reveal-right {
+  opacity: 0;
+  animation: slide-in-right 0.7s ease-out forwards;
+  animation-play-state: paused;
+}
+.reveal-right.visible { animation-play-state: running; }
+
+.reveal-scale {
+  opacity: 0;
+  animation: scale-in 0.5s ease-out forwards;
+  animation-play-state: paused;
+}
+.reveal-scale.visible { animation-play-state: running; }
+
+/* Stagger children — add delay-1, delay-2, etc. */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+/* Hero entrance — plays on load, no scroll needed */
+.hero-enter {
+  opacity: 0;
+  animation: fade-up 0.8s ease-out forwards;
+}
+.hero-enter-1 { animation-delay: 0.1s; }
+.hero-enter-2 { animation-delay: 0.3s; }
+.hero-enter-3 { animation-delay: 0.5s; }
+.hero-enter-4 { animation-delay: 0.65s; }
+.hero-enter-5 { animation-delay: 0.8s; }
+
+/* ── Floating icons background ── */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-20px) rotate(8deg); }
+}
+
+@keyframes float-slower {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-14px) rotate(-6deg); }
+}
+
+.float-icon {
+  position: absolute;
+  opacity: 0.04;
+  color: var(--color-gov-navy);
+  animation: float-slow 6s ease-in-out infinite;
+  pointer-events: none;
+}
+.float-icon:nth-child(even) {
+  animation-name: float-slower;
+  animation-duration: 8s;
+}
+
+/* ── 3D tilt card ── */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 800px;
+  will-change: transform;
+}
+
+/* ── Animated counter ── */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.counter-enter {
+  opacity: 0;
+  animation: count-up 0.6s ease-out forwards;
+  animation-play-state: paused;
+}
+.counter-enter.visible { animation-play-state: running; }

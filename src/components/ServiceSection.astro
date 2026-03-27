@@ -12,23 +12,23 @@ interface Props {
 const { title, description, icon, subServices } = Astro.props;
 ---
 
-<section class="service-section border-b border-gov-navy/10 py-12">
+<section class="reveal border-b border-border-warm py-14">
   <div class="grid grid-cols-1 gap-8 md:grid-cols-5">
     <div class="md:col-span-1 flex items-start justify-center">
-      <div class="flex h-24 w-24 items-center justify-center rounded-2xl bg-gov-teal/10 shadow-md">
-        <Icon name={icon} class="h-12 w-12 text-gov-teal" />
+      <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-bg-warm border border-border-warm">
+        <Icon name={icon} class="h-10 w-10 text-gov-navy" />
       </div>
     </div>
     <div class="md:col-span-4">
       <h2 class="text-2xl font-bold text-gov-navy">{title}</h2>
-      <p class="mt-2 text-text-secondary">{description}</p>
+      <p class="mt-2 text-text-secondary leading-relaxed">{description}</p>
 
-      <h3 class="mt-6 text-lg font-semibold text-gov-navy">Requisitos De:</h3>
+      <h3 class="mt-6 text-sm font-semibold uppercase tracking-widest text-muni-gold">Requisitos De:</h3>
       <div class="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2">
         {subServices.map((sub) => (
           <button
             type="button"
-            class="req-btn rounded-lg border border-gov-teal/30 px-4 py-2 text-left text-sm font-medium text-gov-teal hover:bg-gov-teal/10 transition-colors duration-200"
+            class="req-btn rounded-xl border border-border-warm px-4 py-2.5 text-left text-sm font-medium text-gov-navy hover:bg-bg-warm transition-colors duration-200"
             data-title={sub.title}
             data-requirements={JSON.stringify(sub.requirements)}
           >
@@ -40,15 +40,3 @@ const { title, description, icon, subServices } = Astro.props;
   </div>
 </section>
 
-<script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  document.querySelectorAll('.service-section').forEach((section) => {
-    gsap.from(section, {
-      scrollTrigger: { trigger: section, start: 'top 85%' },
-      y: 40, duration: 0.8, ease: 'power2.out',
-    });
-  });
-</script>

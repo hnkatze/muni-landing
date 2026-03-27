@@ -2,15 +2,15 @@
 import { navLinks } from '../data/navigation';
 ---
 
-<nav id="main-nav" class="sticky top-0 z-50 bg-gov-navy/95 backdrop-blur-md shadow-lg">
+<nav id="main-nav" class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-border-warm">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex h-20 items-center justify-between">
+    <div class="flex h-16 items-center justify-between">
       <a href="/" class="flex items-center gap-3">
         <span class="sr-only">Bonito Oriental</span>
-        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-muni-gold text-gov-navy font-bold text-sm">BO</div>
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gov-navy text-white font-bold text-sm">BO</div>
         <div>
-          <p class="text-sm font-semibold text-white">Municipalidad</p>
-          <p class="text-xs text-muni-gold">Bonito Oriental</p>
+          <p class="text-sm font-semibold text-text-primary">Municipalidad</p>
+          <p class="text-xs text-gov-teal font-medium">Bonito Oriental</p>
         </div>
       </a>
 
@@ -20,7 +20,7 @@ import { navLinks } from '../data/navigation';
           <li>
             <a
               href={link.href}
-              class="text-sm font-medium text-white/80 hover:text-muni-gold transition-colors duration-200"
+              class="text-sm font-medium text-text-secondary hover:text-gov-navy transition-colors duration-200"
             >
               {link.label}
             </a>
@@ -32,7 +32,7 @@ import { navLinks } from '../data/navigation';
       <button
         id="menu-toggle"
         type="button"
-        class="lg:hidden p-2 text-white/80 hover:text-white"
+        class="lg:hidden p-2 text-text-secondary hover:text-gov-navy"
         aria-label="Abrir menú"
         aria-expanded="false"
       >
@@ -47,13 +47,13 @@ import { navLinks } from '../data/navigation';
   </div>
 
   {/* Mobile menu */}
-  <div id="mobile-menu" class="hidden lg:hidden border-t border-gov-navy-light bg-gov-navy">
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-border-warm bg-white">
     <ul class="space-y-1 px-4 py-3">
       {navLinks.map((link) => (
         <li>
           <a
             href={link.href}
-            class="mobile-link block rounded-md px-3 py-2 text-base font-medium text-white/80 hover:bg-gov-navy-light hover:text-muni-gold transition-colors"
+            class="mobile-link block rounded-xl px-3 py-2 text-base font-medium text-text-secondary hover:bg-bg-warm hover:text-gov-navy transition-colors"
           >
             {link.label}
           </a>
@@ -64,17 +64,11 @@ import { navLinks } from '../data/navigation';
 </nav>
 
 <script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
   const toggle = document.getElementById('menu-toggle')!;
   const menu = document.getElementById('mobile-menu')!;
   const iconOpen = document.getElementById('icon-open')!;
   const iconClose = document.getElementById('icon-close')!;
-  const nav = document.getElementById('main-nav')!;
 
-  // Mobile menu toggle
   toggle.addEventListener('click', () => {
     const isOpen = !menu.classList.contains('hidden');
     menu.classList.toggle('hidden');
@@ -90,21 +84,5 @@ import { navLinks } from '../data/navigation';
       iconClose.classList.add('hidden');
       toggle.setAttribute('aria-expanded', 'false');
     });
-  });
-
-  // GSAP: hide/show nav on scroll direction
-  let lastScrollY = 0;
-  ScrollTrigger.create({
-    onUpdate: () => {
-      const scrollY = window.scrollY;
-      if (scrollY < 100) {
-        gsap.to(nav, { y: 0, duration: 0.3, ease: 'power2.out' });
-      } else if (scrollY > lastScrollY) {
-        gsap.to(nav, { y: -100, duration: 0.3, ease: 'power2.inOut' });
-      } else {
-        gsap.to(nav, { y: 0, duration: 0.3, ease: 'power2.inOut' });
-      }
-      lastScrollY = scrollY;
-    },
   });
 </script>

@@ -1,13 +1,14 @@
 ---
 ---
 
-<div id="contact-form-wrapper">
-  <h2 class="text-2xl font-bold text-gov-navy">Ponte en Contacto</h2>
+<div id="contact-form-wrapper" class="reveal-left">
+  <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Escríbenos</p>
+  <h2 class="mt-2 text-2xl font-bold text-gov-navy">Ponte en Contacto</h2>
   <p class="mt-2 text-text-secondary">
     Tienes una pregunta o quieres trabajar juntos? Completa el formulario a continuacion o contactanos directamente.
   </p>
 
-  <form id="contact-form" class="mt-6 space-y-4">
+  <form id="contact-form" class="mt-8 space-y-5">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
       <div>
         <label for="name" class="block text-sm font-medium text-text-primary">Nombre</label>
@@ -17,7 +18,7 @@
           name="name"
           required
           placeholder="Ingresa tu nombre"
-          class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder-text-tertiary focus:border-gov-teal focus:ring-2 focus:ring-gov-teal/30 focus:outline-none transition-colors"
+          class="mt-1.5 w-full rounded-xl border border-border-warm bg-bg-subtle px-4 py-2.5 text-sm placeholder-text-tertiary focus:border-gov-navy focus:ring-2 focus:ring-gov-navy/10 focus:outline-none transition-colors"
         />
       </div>
       <div>
@@ -28,7 +29,7 @@
           name="email"
           required
           placeholder="Ingresa tu correo electronico"
-          class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder-text-tertiary focus:border-gov-teal focus:ring-2 focus:ring-gov-teal/30 focus:outline-none transition-colors"
+          class="mt-1.5 w-full rounded-xl border border-border-warm bg-bg-subtle px-4 py-2.5 text-sm placeholder-text-tertiary focus:border-gov-navy focus:ring-2 focus:ring-gov-navy/10 focus:outline-none transition-colors"
         />
       </div>
     </div>
@@ -41,7 +42,7 @@
         name="subject"
         required
         placeholder="Ingresa el asunto"
-        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder-text-tertiary focus:border-gov-teal focus:ring-2 focus:ring-gov-teal/30 focus:outline-none transition-colors"
+        class="mt-1.5 w-full rounded-xl border border-border-warm bg-bg-subtle px-4 py-2.5 text-sm placeholder-text-tertiary focus:border-gov-navy focus:ring-2 focus:ring-gov-navy/10 focus:outline-none transition-colors"
       />
     </div>
 
@@ -52,14 +53,14 @@
         name="message"
         required
         placeholder="Ingresa tu mensaje"
-        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder-text-tertiary focus:border-gov-teal focus:ring-2 focus:ring-gov-teal/30 focus:outline-none transition-colors"
+        class="mt-1.5 w-full rounded-xl border border-border-warm bg-bg-subtle px-4 py-2.5 text-sm placeholder-text-tertiary focus:border-gov-navy focus:ring-2 focus:ring-gov-navy/10 focus:outline-none transition-colors"
         style="min-height: 150px;"
       ></textarea>
     </div>
 
     <button
       type="submit"
-      class="rounded-full bg-muni-green px-8 py-2.5 text-sm font-medium text-white hover:bg-muni-green-dark transition-colors duration-200"
+      class="rounded-full bg-gov-navy px-8 py-2.5 text-sm font-medium text-white hover:bg-gov-navy-light transition-colors duration-200 shadow-md shadow-gov-navy/20"
     >
       Enviar Mensaje
     </button>
@@ -69,10 +70,6 @@
 </div>
 
 <script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
   const form = document.getElementById('contact-form') as HTMLFormElement;
   const feedback = document.getElementById('form-feedback')!;
 
@@ -89,19 +86,14 @@
       });
       if (res.ok) {
         feedback.textContent = 'Listo, Nos Pondremos En Contacto Contigo Pronto.';
-        feedback.className = 'mt-4 rounded-lg bg-muni-green/10 p-3 text-sm text-muni-green-dark';
+        feedback.className = 'mt-4 rounded-xl bg-muni-green/10 p-3 text-sm text-muni-green-dark';
         form.reset();
       } else {
         throw new Error('Error');
       }
     } catch {
       feedback.textContent = 'Hubo un error al enviar el mensaje. Intenta de nuevo.';
-      feedback.className = 'mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700';
+      feedback.className = 'mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-700';
     }
-  });
-
-  gsap.from('#contact-form-wrapper', {
-    scrollTrigger: { trigger: '#contact-form-wrapper', start: 'top 80%' },
-    x: -60, duration: 0.8, ease: 'power2.out',
   });
 </script>

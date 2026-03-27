@@ -4,27 +4,27 @@ import { navLinks } from '../data/navigation';
 ---
 
 <footer id="site-footer" class="bg-gov-navy">
-  {/* Gold accent bar */}
-  <div class="h-1 bg-gradient-to-r from-muni-gold via-gov-teal to-muni-green"></div>
+  {/* Warm accent bar */}
+  <div class="h-0.5 bg-gradient-to-r from-muni-gold via-muni-gold-soft to-muni-gold"></div>
 
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-    <div class="footer-col grid grid-cols-1 md:grid-cols-3 gap-8">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+    <div class="footer-col grid grid-cols-1 md:grid-cols-3 gap-10">
       {/* Branding */}
       <div class="footer-col">
         <div class="flex items-center gap-3">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-muni-gold text-gov-navy font-bold text-sm">BO</div>
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white font-bold text-sm">BO</div>
           <p class="text-lg font-semibold text-white">Municipalidad Bonito Oriental</p>
         </div>
-        <p class="mt-3 text-sm text-white/50">Trabajando juntos por un futuro mejor.</p>
+        <p class="mt-3 text-sm text-white/40">Trabajando juntos por un futuro mejor.</p>
       </div>
 
       {/* Navigation */}
       <div class="footer-col">
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-muni-gold">Navegación</h3>
-        <ul class="mt-3 space-y-2">
+        <h3 class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Navegación</h3>
+        <ul class="mt-4 space-y-2.5">
           {navLinks.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-white/60 hover:text-muni-gold transition-colors duration-200">
+              <a href={link.href} class="text-sm text-white/50 hover:text-white transition-colors duration-200">
                 {link.label}
               </a>
             </li>
@@ -34,41 +34,30 @@ import { navLinks } from '../data/navigation';
 
       {/* Contact */}
       <div class="footer-col">
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-muni-gold">Contacto</h3>
-        <ul class="mt-3 space-y-3 text-sm text-white/60">
+        <h3 class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Contacto</h3>
+        <ul class="mt-4 space-y-3 text-sm text-white/50">
           <li class="flex items-start gap-2">
-            <Icon name="lucide:map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-muni-gold" />
+            <Icon name="lucide:map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-muni-gold/70" />
             Calle Central Este, Barrio Las Acacias
           </li>
           <li class="flex items-start gap-2">
-            <Icon name="lucide:mail" class="mt-0.5 h-4 w-4 shrink-0 text-muni-gold" />
+            <Icon name="lucide:mail" class="mt-0.5 h-4 w-4 shrink-0 text-muni-gold/70" />
             municipalidadbonitoriental@gmail.com
           </li>
           <li class="flex items-start gap-2">
-            <Icon name="lucide:phone" class="mt-0.5 h-4 w-4 shrink-0 text-muni-gold" />
+            <Icon name="lucide:phone" class="mt-0.5 h-4 w-4 shrink-0 text-muni-gold/70" />
             +504 2438-9111
           </li>
         </ul>
       </div>
     </div>
 
-    <div class="mt-8 border-t border-gov-navy-light pt-8 text-center text-sm text-white/40">
-      <p>&copy; 2023 Municipalidad Bonito Oriental. All rights reserved.</p>
+    <div class="mt-10 border-t border-white/10 pt-8 text-center text-sm text-white/30">
+      <p>&copy; 2024 Municipalidad Bonito Oriental. Todos los derechos reservados.</p>
       <p class="mt-1">
-        By <a href="https://www.linkedin.com/in/hnkatze/" target="_blank" rel="noopener noreferrer" class="text-muni-gold hover:text-white transition-colors duration-200">Camilo Henriquez</a>
+        Por <a href="https://www.linkedin.com/in/hnkatze/" target="_blank" rel="noopener noreferrer" class="text-muni-gold/60 hover:text-muni-gold transition-colors duration-200">Camilo Henriquez</a>
       </p>
     </div>
   </div>
 </footer>
 
-<script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  const cols = document.querySelectorAll('.footer-col');
-  gsap.from(cols, {
-    scrollTrigger: { trigger: '#site-footer', start: 'top 90%' },
-    y: 30, stagger: 0.15, duration: 0.6, ease: 'power2.out',
-  });
-</script>

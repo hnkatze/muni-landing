@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
 import muniLogo from '../assets/Muni.png';
 
 interface Props {
@@ -7,47 +8,66 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+const floatingIcons = [
+  { name: 'lucide:coins',          top: '8%',  left: '5%',  size: 'h-16 w-16', delay: '0s' },
+  { name: 'lucide:scale',          top: '15%', right: '8%', size: 'h-12 w-12', delay: '1s' },
+  { name: 'lucide:map',            top: '60%', left: '3%',  size: 'h-14 w-14', delay: '2s' },
+  { name: 'lucide:building-2',     top: '70%', right: '6%', size: 'h-10 w-10', delay: '3s' },
+  { name: 'lucide:clipboard-list', top: '35%', left: '8%',  size: 'h-10 w-10', delay: '1.5s' },
+  { name: 'lucide:trees',          top: '45%', right: '4%', size: 'h-14 w-14', delay: '0.5s' },
+  { name: 'lucide:users',          top: '80%', left: '12%', size: 'h-12 w-12', delay: '2.5s' },
+  { name: 'lucide:heart',          top: '25%', right: '15%',size: 'h-8 w-8',   delay: '3.5s' },
+];
 ---
 
-<section class="relative flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center bg-gradient-to-b from-gov-navy via-gov-navy-light to-gov-teal overflow-hidden">
+<section class="relative flex min-h-[90vh] flex-col items-center justify-center gap-8 px-4 text-center bg-gradient-to-b from-bg-subtle via-white to-bg-warm overflow-hidden">
+  {/* Decorative blobs */}
+  <div class="absolute top-0 right-0 -z-10 h-[600px] w-[600px] rounded-full bg-gov-teal/5 blur-3xl"></div>
+  <div class="absolute bottom-0 left-0 -z-10 h-[400px] w-[400px] rounded-full bg-muni-gold/8 blur-3xl"></div>
+
+  {/* Floating icons */}
+  {floatingIcons.map((icon) => (
+    <Icon
+      name={icon.name}
+      class:list={['float-icon hidden lg:block', icon.size]}
+      style={`top:${icon.top};${icon.left ? `left:${icon.left}` : `right:${icon.right}`};animation-delay:${icon.delay}`}
+    />
+  ))}
+
   <Image
     src={muniLogo}
     alt="Muni"
     width={550}
     height={650}
-    class="hero-logo max-w-[220px] md:max-w-[350px] lg:max-w-[450px] h-auto drop-shadow-2xl"
+    class="hero-enter hero-enter-1 max-w-[180px] md:max-w-[280px] lg:max-w-[360px] h-auto drop-shadow-lg"
   />
-  <h1 class="hero-title text-4xl font-bold uppercase tracking-wider text-white lg:text-6xl">
-    {title}
-  </h1>
-  <p class="hero-subtitle text-lg text-white/70 max-w-2xl">
+
+  <div class="hero-enter hero-enter-2">
+    <h1 class="text-3xl font-bold uppercase tracking-wider text-gov-navy lg:text-5xl">
+      {title}
+    </h1>
+    <p class="mt-1 text-sm font-medium text-muni-gold tracking-widest">Colón, Honduras</p>
+  </div>
+
+  <p class="hero-enter hero-enter-3 text-lg text-text-secondary max-w-2xl leading-relaxed">
     Comprometidos con el bienestar y progreso de nuestra comunidad
   </p>
 
-  <div class="hero-ctas mt-4 flex flex-wrap gap-4 justify-center">
-    <a href="/servicios" class="px-8 py-3 bg-muni-green hover:bg-muni-green-dark text-white font-semibold rounded-full transition-colors duration-200 shadow-lg">
+  <div class="hero-enter hero-enter-4 mt-2 flex flex-wrap gap-4 justify-center">
+    <a href="/servicios" class="px-8 py-3 bg-gov-navy hover:bg-gov-navy-light text-white font-semibold rounded-full transition-colors duration-200 shadow-md shadow-gov-navy/20">
       Conocer Servicios
     </a>
-    <a href="/nosotros" class="px-8 py-3 border-2 border-white/30 text-white hover:border-white/60 font-semibold rounded-full transition-colors duration-200">
+    <a href="/nosotros" class="px-8 py-3 border-2 border-gov-navy/20 text-gov-navy hover:border-gov-navy/40 hover:bg-gov-navy/5 font-semibold rounded-full transition-all duration-200">
       Sobre Nosotros
     </a>
   </div>
 
   {/* Scroll indicator */}
   <div class="absolute bottom-8 animate-bounce">
-    <svg class="h-6 w-6 text-white/50" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+    <svg class="h-6 w-6 text-gov-navy/30" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
     </svg>
   </div>
 </section>
 
-<script>
-  import gsap from 'gsap';
-
-  const tl = gsap.timeline({ delay: 0.3 });
-
-  tl.from('.hero-logo', { y: 40, scale: 0.9, duration: 1, ease: 'power3.out' })
-    .from('.hero-title', { clipPath: 'inset(0 100% 0 0)', duration: 1.2, ease: 'power4.out' }, 0.3)
-    .from('.hero-subtitle', { y: 20, duration: 0.8, ease: 'power2.out' }, 0.6)
-    .from('.hero-ctas > *', { y: 30, stagger: 0.15, duration: 0.8, ease: 'power2.out' }, 0.8);
-</script>

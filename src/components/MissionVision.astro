@@ -1,30 +1,22 @@
 ---
 ---
 
-<section id="mission-vision" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+<section id="mission-vision" class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
   <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-    <div class="mv-card rounded-2xl bg-white shadow-md p-8 border-t-4 border-gov-teal">
-      <h2 class="text-2xl font-bold text-gov-navy">Mision</h2>
-      <p class="mt-4 leading-relaxed text-text-secondary">
+    <div class="reveal rounded-3xl bg-white p-10 border border-border-warm">
+      <p class="text-sm font-semibold uppercase tracking-widest text-gov-teal">Nuestra</p>
+      <h2 class="mt-1 text-2xl font-bold text-gov-navy">Misión</h2>
+      <p class="mt-5 leading-relaxed text-text-secondary">
         Ser una institucion publica lider en la prestacion de servicios de calidad con eficiencia, eficacia y transparencia a la poblacion del municipio, promoviendo el bienestar individual y colectivo, el desarrollo integral y sostenible en el ambito social, economico, cultural y ambiental, con un enfoque participativo e inclusivo que fomente la corresponsabilidad entre la ciudadania y las autoridades.
       </p>
     </div>
-    <div class="mv-card rounded-2xl bg-white shadow-md p-8 border-t-4 border-muni-gold">
-      <h2 class="text-2xl font-bold text-gov-navy">Vision</h2>
-      <p class="mt-4 leading-relaxed text-text-secondary">
+    <div class="reveal delay-2 rounded-3xl bg-white p-10 border border-border-warm">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Nuestra</p>
+      <h2 class="mt-1 text-2xl font-bold text-gov-navy">Visión</h2>
+      <p class="mt-5 leading-relaxed text-text-secondary">
         Ser un municipio modelo de participacion ciudadana y desarrollo comunal, reconocido por la excelencia en la gestion publica, con un personal altamente calificado, comprometido, amable y eficiente que trabaja en equipo para atender las necesidades de las personas y brindar soluciones innovadoras a la comunidad, construyendo un futuro prospero, sostenible y equitativo para todos.
       </p>
     </div>
   </div>
 </section>
 
-<script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from('.mv-card', {
-    scrollTrigger: { trigger: '#mission-vision', start: 'top 80%' },
-    y: 40, stagger: 0.2, duration: 0.8, ease: 'power2.out',
-  });
-</script>
