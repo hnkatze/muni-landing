@@ -3,13 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import AboutSection from '../components/AboutSection.astro';
 import ServiceCard from '../components/ServiceCard.astro';
+import StatsCounter from '../components/StatsCounter.astro';
+import Timeline from '../components/Timeline.astro';
+import CtaBanner from '../components/CtaBanner.astro';
 
 const serviceCards = [
-  { title: 'Tributacion', description: 'Oficina encargada de la seguridad y que los derechos se respeten', icon: 'lucide:coins' },
-  { title: 'Justicia', description: 'Oficina encargada de llevar el progreso del municipio al siguiente nivel', icon: 'lucide:scale' },
-  { title: 'Catastro', description: 'Oficina encargada de la seguridad y que los derechos se respeten', icon: 'lucide:map' },
-  { title: 'Desarrollo Comunitario', description: 'Oficina encargada de llevar el progreso del municipio al siguiente nivel', icon: 'lucide:building-2' },
-  { title: 'Secretaria', description: 'Oficina encargada de llevar el progreso del municipio al siguiente nivel', icon: 'lucide:clipboard-list' },
+  { title: 'Tributación', description: 'Gestión de impuestos municipales, tasas y contribuciones para el desarrollo del municipio.', icon: 'lucide:coins' },
+  { title: 'Justicia Municipal', description: 'Mediación de conflictos, protección de derechos ciudadanos y aplicación de justicia local.', icon: 'lucide:scale' },
+  { title: 'Catastro', description: 'Registro y administración de propiedades, mediciones de terrenos y certificaciones catastrales.', icon: 'lucide:map' },
+  { title: 'Desarrollo Comunitario', description: 'Proyectos de infraestructura, programas sociales y apoyo al crecimiento de las comunidades.', icon: 'lucide:building-2' },
+  { title: 'Secretaría Municipal', description: 'Emisión de certificaciones, actas, constancias y trámites administrativos generales.', icon: 'lucide:clipboard-list' },
 ];
 ---
 
@@ -21,13 +24,15 @@ const serviceCards = [
     content="Somos una municipalidad comprometida fervientemente con el bienestar y progreso de nuestra amada comunidad. Nos dedicamos incansablemente a velar por cada uno de nuestros ciudadanos, buscando constantemente su prosperidad y calidad de vida. Nuestro compromiso es inquebrantable, enfocado en construir un futuro donde todos puedan sentirse seguros, escuchados y respaldados. Porque juntos, creamos un lugar mejor para todos!"
   />
 
-  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <StatsCounter />
+
+  <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
     <div class="text-center">
-      <p class="text-5xl font-bold text-gov-navy">Servicios</p>
-      <div class="mx-auto mt-4 h-1 w-20 rounded-full bg-muni-gold"></div>
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Lo que hacemos</p>
+      <p class="mt-2 text-4xl font-bold text-gov-navy lg:text-5xl">Servicios</p>
     </div>
 
-    <div class="mt-12 flex flex-wrap items-stretch justify-center gap-6">
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
       {serviceCards.map((card) => (
         <ServiceCard
           title={card.title}
@@ -38,4 +43,8 @@ const serviceCards = [
       ))}
     </div>
   </section>
+
+  <Timeline />
+
+  <CtaBanner />
 </Layout>

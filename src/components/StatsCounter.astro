@@ -1,0 +1,72 @@
+---
+const stats = [
+  { value: 37, suffix: '+', label: 'Años de Historia', icon: 'lucide:calendar' },
+  { value: 7, suffix: '', label: 'Corporaciones', icon: 'lucide:users' },
+  { value: 5, suffix: '+', label: 'Oficinas de Servicio', icon: 'lucide:building-2' },
+  { value: 20, suffix: '+', label: 'Comunidades', icon: 'lucide:map-pin' },
+];
+---
+
+<section id="stats-section" class="relative overflow-hidden bg-gov-navy py-20">
+  {/* Decorative accent */}
+  <div class="absolute inset-0 bg-gradient-to-r from-gov-navy via-gov-navy-light/20 to-gov-navy"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Cifras que importan</p>
+      <h2 class="mt-2 text-3xl font-bold text-white">Nuestro Impacto</h2>
+    </div>
+
+    <div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
+      {stats.map((stat, i) => (
+        <div class={`counter-enter delay-${i + 1} text-center`}>
+          <p class="text-5xl font-bold text-white lg:text-6xl">
+            <span class="counter" data-target={stat.value}>0</span>{stat.suffix}
+          </p>
+          <p class="mt-2 text-sm font-medium text-white/50 uppercase tracking-wider">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const counters = document.querySelectorAll('.counter');
+  const section = document.getElementById('stats-section');
+
+  const animateCounter = (el: Element) => {
+    const target = parseInt(el.getAttribute('data-target') || '0');
+    const duration = 1500;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target).toString();
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  };
+
+  if (section) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Trigger counter-enter animations
+            section.querySelectorAll('.counter-enter').forEach((el) => {
+              el.classList.add('visible');
+            });
+            // Start counting
+            counters.forEach((c) => animateCounter(c));
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(section);
+  }
+</script>
