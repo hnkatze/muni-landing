@@ -1,9 +1,56 @@
 ---
+import { getCollection } from 'astro:content';
+import { serviceDepartments } from '../data/servicios';
+
+const today = new Date();
+const currentYear = today.getFullYear();
+
+// 1. Vacantes abiertas (deadline >= today)
+const allVacantes = await getCollection('vacantes');
+const openVacantes = allVacantes.filter((v) => v.data.deadline >= today).length;
+
+// 2. Noticias publicadas este año
+const allNoticias = await getCollection('noticias');
+const noticiasThisYear = allNoticias.filter(
+  (n) => n.data.publishedAt.getFullYear() === currentYear
+).length;
+
+// 3. Cabildos realizados (all time)
+const allCabildos = await getCollection('cabildos');
+const totalCabildos = allCabildos.length;
+
+// 4. Servicios disponibles (all subServices across all departments)
+const totalServicios = serviceDepartments.flatMap((d) => d.subServices).length;
+
 const stats = [
-  { value: 37, suffix: '+', label: 'Años de Historia', icon: 'lucide:calendar' },
-  { value: 7, suffix: '', label: 'Corporaciones', icon: 'lucide:users' },
-  { value: 5, suffix: '+', label: 'Oficinas de Servicio', icon: 'lucide:building-2' },
-  { value: 20, suffix: '+', label: 'Comunidades', icon: 'lucide:map-pin' },
+  {
+    value: openVacantes,
+    suffix: '',
+    label: 'Vacantes Vigentes',
+    sublabel: 'plaza abierta hoy',
+    icon: 'M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM4 5h16a1 1 0 0 1 1 1v1H3V6a1 1 0 0 1 1-1z',
+  },
+  {
+    value: noticiasThisYear,
+    suffix: '',
+    label: `Noticias ${currentYear}`,
+    sublabel: 'publicadas este año',
+    icon: 'M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10l6 6v10a2 2 0 0 1-2 2zM12 12H7m5 4H7m7-8h-2v6',
+  },
+  {
+    value: totalCabildos,
+    suffix: '',
+    label: 'Cabildos Realizados',
+    sublabel: 'en el registro',
+    icon: 'M17 20h5v-2a3 3 0 0 0-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 0 1 5.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0',
+  },
+  {
+    value: totalServicios,
+    suffix: '',
+    label: 'Servicios Disponibles',
+    sublabel: 'trámites municipales',
+    icon: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 0 2-2h2a2 2 0 0 0 2 2m-6 7h.01M12 12h.01M15 12h.01M12 16h.01',
+  },
 ];
 ---
 
@@ -14,16 +61,22 @@ const stats = [
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
       <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Cifras que importan</p>
-      <h2 class="mt-2 text-3xl font-bold text-white">Nuestro Impacto</h2>
+      <h2 class="mt-2 text-3xl font-bold text-white">En Tiempo Real</h2>
     </div>
 
     <div class="grid grid-cols-2 gap-8 lg:grid-cols-4">
       {stats.map((stat, i) => (
         <div class={`counter-enter delay-${i + 1} text-center`}>
+          <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
+            <svg class="h-6 w-6 text-muni-gold" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d={stat.icon} />
+            </svg>
+          </div>
           <p class="text-5xl font-bold text-white lg:text-6xl">
             <span class="counter" data-target={stat.value}>0</span>{stat.suffix}
           </p>
-          <p class="mt-2 text-sm font-medium text-white/50 uppercase tracking-wider">{stat.label}</p>
+          <p class="mt-2 text-sm font-semibold text-white/80 uppercase tracking-wider">{stat.label}</p>
+          <p class="mt-0.5 text-xs text-white/40">{stat.sublabel}</p>
         </div>
       ))}
     </div>
@@ -55,11 +108,9 @@ const stats = [
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Trigger counter-enter animations
             section.querySelectorAll('.counter-enter').forEach((el) => {
               el.classList.add('visible');
             });
-            // Start counting
             counters.forEach((c) => animateCounter(c));
             observer.unobserve(entry.target);
           }

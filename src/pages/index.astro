@@ -1,35 +1,64 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import AboutSection from '../components/AboutSection.astro';
+import HeroActions from '../components/HeroActions.astro';
+import FeaturedNoticias from '../components/FeaturedNoticias.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import StatsCounter from '../components/StatsCounter.astro';
+import AboutSection from '../components/AboutSection.astro';
 import Timeline from '../components/Timeline.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 
+// Service cards with deep-links to anchor IDs on /servicios
 const serviceCards = [
-  { title: 'Tributación', description: 'Gestión de impuestos municipales, tasas y contribuciones para el desarrollo del municipio.', icon: 'lucide:coins' },
-  { title: 'Justicia Municipal', description: 'Mediación de conflictos, protección de derechos ciudadanos y aplicación de justicia local.', icon: 'lucide:scale' },
-  { title: 'Catastro', description: 'Registro y administración de propiedades, mediciones de terrenos y certificaciones catastrales.', icon: 'lucide:map' },
-  { title: 'Desarrollo Comunitario', description: 'Proyectos de infraestructura, programas sociales y apoyo al crecimiento de las comunidades.', icon: 'lucide:building-2' },
-  { title: 'Secretaría Municipal', description: 'Emisión de certificaciones, actas, constancias y trámites administrativos generales.', icon: 'lucide:clipboard-list' },
+  {
+    title: 'Tributación',
+    description: 'Gestión de impuestos municipales, tasas y contribuciones para el desarrollo del municipio.',
+    icon: 'lucide:coins',
+    href: '/servicios#tributacion',
+  },
+  {
+    title: 'Justicia Municipal',
+    description: 'Mediación de conflictos, protección de derechos ciudadanos y aplicación de justicia local.',
+    icon: 'lucide:scale',
+    href: '/servicios#justicia',
+  },
+  {
+    title: 'Catastro',
+    description: 'Registro y administración de propiedades, mediciones de terrenos y certificaciones catastrales.',
+    icon: 'lucide:map',
+    href: '/servicios#catastro',
+  },
+  {
+    title: 'Desarrollo Comunitario',
+    description: 'Proyectos de infraestructura, programas sociales y apoyo al crecimiento de las comunidades.',
+    icon: 'lucide:building-2',
+    href: '/servicios#desarrollo',
+  },
+  {
+    title: 'Secretaría Municipal',
+    description: 'Emisión de certificaciones, actas, constancias y trámites administrativos generales.',
+    icon: 'lucide:clipboard-list',
+    href: '/servicios#secretaria',
+  },
 ];
 ---
 
 <Layout>
+  {/* 1. Hero — identity + quick-action CTA buttons */}
   <Hero title="MUNICIPALIDAD DE BONITO ORIENTAL" />
 
-  <AboutSection
-    title="Sobre Nosotros"
-    content="Somos una municipalidad comprometida fervientemente con el bienestar y progreso de nuestra amada comunidad. Nos dedicamos incansablemente a velar por cada uno de nuestros ciudadanos, buscando constantemente su prosperidad y calidad de vida. Nuestro compromiso es inquebrantable, enfocado en construir un futuro donde todos puedan sentirse seguros, escuchados y respaldados. Porque juntos, creamos un lugar mejor para todos!"
-  />
+  {/* 2. Quick-action tiles — 6 citizen shortcuts below Hero */}
+  <HeroActions />
 
-  <StatsCounter />
+  {/* 3. Featured noticias — latest news */}
+  <FeaturedNoticias />
 
+  {/* 4. Servicios — deep-linked cards */}
   <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
     <div class="text-center">
       <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Lo que hacemos</p>
-      <p class="mt-2 text-4xl font-bold text-gov-navy lg:text-5xl">Servicios</p>
+      <h2 class="mt-2 text-4xl font-bold text-gov-navy lg:text-5xl">Servicios</h2>
     </div>
 
     <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -38,13 +67,25 @@ const serviceCards = [
           title={card.title}
           description={card.description}
           icon={card.icon}
-          href="/servicios"
+          href={card.href}
         />
       ))}
     </div>
   </section>
 
-  <Timeline />
+  {/* 6. Stats counter — live numbers from collections */}
+  <StatsCounter />
 
+  {/* 7. About — compact variant with 2-line excerpt */}
+  <AboutSection
+    variant="compact"
+    title="Sobre Nosotros"
+    content="Trabajamos día a día por el bienestar y progreso de Bonito Oriental, brindando servicios accesibles y transparencia a nuestra comunidad."
+  />
+
+  {/* 8. Timeline — compact variant showing top 4 milestones */}
+  <Timeline variant="compact" />
+
+  {/* 9. CTA banner */}
   <CtaBanner />
 </Layout>

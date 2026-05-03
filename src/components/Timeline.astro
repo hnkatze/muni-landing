@@ -1,5 +1,11 @@
 ---
-const milestones = [
+interface Props {
+  variant?: 'full' | 'compact';
+}
+
+const { variant = 'full' } = Astro.props;
+
+const allMilestones = [
   { year: '1987', title: 'Primera Corporación', desc: 'Se nombra la primera corporación municipal, encabezada por Heriberto Rodríguez.' },
   { year: '1989', title: 'Primer Alcalde Electo', desc: 'Tulio Turcios Romero se convierte en el primer alcalde elegido democráticamente.' },
   { year: '1994', title: 'Edificio Municipal', desc: 'Se funda el edificio municipal bajo la corporación de Heriberto Rodríguez.' },
@@ -8,6 +14,9 @@ const milestones = [
   { year: '2010', title: 'Mercado y Parque', desc: 'Construcción del mercado municipal, culminación del parque y múltiples escuelas.' },
   { year: '2014', title: 'Participación Ciudadana', desc: 'Presupuesto participativo y empoderamiento de organizaciones como AJABO y CCT.' },
 ];
+
+const milestones = variant === 'compact' ? allMilestones.slice(0, 4) : allMilestones;
+const cols = variant === 'compact' ? 'grid-cols-4' : 'grid-cols-7';
 ---
 
 <section id="timeline-section" class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -21,7 +30,7 @@ const milestones = [
     {/* Line */}
     <div class="absolute top-6 left-0 right-0 h-0.5 bg-border-warm"></div>
 
-    <div class="grid grid-cols-7 gap-4">
+    <div class={`grid ${cols} gap-4`}>
       {milestones.map((m, i) => (
         <div class={`reveal delay-${Math.min(i + 1, 5)} relative flex flex-col items-center text-center`}>
           {/* Dot */}
@@ -54,4 +63,18 @@ const milestones = [
       ))}
     </div>
   </div>
+
+  {variant === 'compact' && (
+    <div class="mt-10 text-center">
+      <a
+        href="/nosotros"
+        class="inline-flex items-center gap-2 text-sm font-semibold text-gov-navy hover:text-gov-teal transition-colors duration-200"
+      >
+        Ver historia completa
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  )}
 </section>

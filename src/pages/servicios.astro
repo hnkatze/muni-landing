@@ -12,6 +12,7 @@ import { serviceDepartments } from '../data/servicios';
 
     {serviceDepartments.map((dept) => (
       <ServiceSection
+        id={dept.id}
         title={dept.title}
         description={dept.description}
         icon={dept.icon}

@@ -7,12 +7,13 @@ interface Props {
   description: string;
   icon: string;
   subServices: SubService[];
+  id?: string;
 }
 
-const { title, description, icon, subServices } = Astro.props;
+const { title, description, icon, subServices, id } = Astro.props;
 ---
 
-<section class="reveal border-b border-border-warm py-14">
+<section id={id} class="reveal border-b border-border-warm py-14">
   <div class="grid grid-cols-1 gap-8 md:grid-cols-5">
     <div class="md:col-span-1 flex items-start justify-center">
       <div class="flex h-20 w-20 items-center justify-center rounded-2xl bg-bg-warm border border-border-warm">
