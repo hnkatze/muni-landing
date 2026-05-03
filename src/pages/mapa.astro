@@ -1,0 +1,143 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MapFilters from '../components/map/MapFilters.astro';
+import MapIsland from '../components/map/MapIsland.astro';
+import LocationCard from '../components/map/LocationCard.astro';
+import { mapPoints } from '../data/map-points';
+import {
+  MAP_CATEGORIES,
+  CATEGORY_LABELS,
+  CATEGORY_COLORS,
+} from '../types/map';
+
+// Group points by category for the list fallback
+const grouped = MAP_CATEGORIES.map((cat) => ({
+  category: cat,
+  label: CATEGORY_LABELS[cat],
+  colors: CATEGORY_COLORS[cat],
+  points: mapPoints.filter((p) => p.category === cat),
+})).filter((g) => g.points.length > 0);
+---
+
+<Layout
+  title="Mapa Interactivo | Bonito Oriental"
+  description="Mapa interactivo de Bonito Oriental con ubicaciones de oficinas municipales, escuelas, centros de salud, parques, atractivos turísticos y barrios."
+>
+  {/* ── Skip navigation link ─────────────────────────────────────────────── */}
+  <a
+    href="#lista-ubicaciones"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-20 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-gov-navy focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg focus:outline-none"
+  >
+    Saltar mapa, ir a lista de ubicaciones
+  </a>
+
+  {/* ── Hero Banner ──────────────────────────────────────────────────────── */}
+  <section class="bg-gov-navy py-16 px-4">
+    <div class="mx-auto max-w-7xl">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Comunidad</p>
+      <h1 class="mt-2 text-4xl font-bold text-white md:text-5xl">Mapa Interactivo</h1>
+      <p class="mt-3 max-w-2xl text-base text-white/60 leading-relaxed">
+        Encuentra oficinas municipales, escuelas, centros de salud, parques, atractivos turísticos
+        y barrios de Bonito Oriental en un mapa interactivo.
+      </p>
+    </div>
+  </section>
+
+  {/* ── Main content ─────────────────────────────────────────────────────── */}
+  <section
+    class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"
+    aria-label="Mapa y lista de ubicaciones"
+  >
+
+    {/* ── Mobile/Tablet: filters at top ───────────────────────────────────── */}
+    <div class="mb-6 lg:hidden">
+      <h2 class="mb-3 text-sm font-semibold uppercase tracking-widest text-text-secondary">
+        Filtrar por categoría
+      </h2>
+      <MapFilters />
+    </div>
+
+    {/* ── Desktop: two-column layout ───────────────────────────────────────── */}
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-start">
+
+      {/* Sidebar — desktop only */}
+      <aside
+        class="hidden lg:block w-64 shrink-0 rounded-xl border border-border-warm bg-white p-5 shadow-sm sticky top-24"
+        aria-label="Filtros del mapa"
+      >
+        <h2 class="mb-4 text-sm font-semibold uppercase tracking-widest text-text-secondary">
+          Categorías
+        </h2>
+        <div class="flex flex-col gap-2">
+          <MapFilters />
+        </div>
+
+        <hr class="my-4 border-border-warm" />
+
+        <div class="text-xs text-text-tertiary leading-relaxed space-y-1">
+          <p>
+            <span class="font-medium text-text-secondary">{mapPoints.length}</span> ubicaciones registradas
+          </p>
+          <p>Datos actualizados 2025 · Bonito Oriental, Colón</p>
+        </div>
+      </aside>
+
+      {/* Map area */}
+      <div class="min-w-0 flex-1">
+        <MapIsland points={mapPoints} />
+
+        {/* Mobile hint */}
+        <p class="mt-2 text-xs text-text-tertiary lg:hidden">
+          Toca un marcador para ver los detalles. Usa los filtros de arriba para mostrar solo una categoría.
+        </p>
+        <p class="mt-2 hidden text-xs text-text-tertiary lg:block">
+          Haz clic en un marcador para ver los detalles. Usa los filtros de la izquierda para filtrar por categoría.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Accessible list fallback ─────────────────────────────────────────── */}
+  <section
+    id="lista-ubicaciones"
+    class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
+    aria-label="Lista de todas las ubicaciones"
+  >
+    <div class="mb-6 border-t border-border-warm pt-8">
+      <h2 class="text-2xl font-bold text-gov-navy">Lista de Ubicaciones</h2>
+      <p class="mt-1 text-sm text-text-secondary">
+        Todas las ubicaciones disponibles en el mapa, organizadas por categoría.
+      </p>
+    </div>
+
+    {grouped.map(({ category, label, colors, points }) => (
+      <div
+        class="mb-10"
+        data-location-group={category}
+        id={`grupo-${category}`}
+      >
+        <div class="mb-4 flex items-center gap-3">
+          <span
+            class:list={['rounded-full px-3 py-1 text-sm font-semibold', colors.bg, colors.text]}
+          >
+            {label}
+          </span>
+          <span class="text-sm text-text-tertiary">
+            {points.length} {points.length === 1 ? 'ubicación' : 'ubicaciones'}
+          </span>
+        </div>
+
+        <ul
+          class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          aria-label={`Ubicaciones de ${label}`}
+        >
+          {points.map((point) => (
+            <li id={`point-${point.id}`}>
+              <LocationCard point={point} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+</Layout>

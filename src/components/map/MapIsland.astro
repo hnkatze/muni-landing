@@ -1,0 +1,52 @@
+---
+import type { MapPoint } from '../../types/map';
+
+interface Props {
+  points: MapPoint[];
+}
+
+const { points } = Astro.props;
+const serialized = JSON.stringify(points);
+---
+
+<div
+  id="map-container"
+  class="relative w-full overflow-hidden rounded-xl border border-border-warm shadow-md"
+  style="height: 520px;"
+  aria-label="Mapa interactivo de Bonito Oriental"
+>
+  <div
+    id="map"
+    class="h-full w-full"
+    data-points={serialized}
+    role="application"
+    aria-label="Mapa de Leaflet — use el teclado o pantalla táctil para navegar"
+  ></div>
+
+  {/* Loading overlay — removed by map-init once Leaflet is ready */}
+  <div
+    id="map-loading"
+    class="absolute inset-0 flex items-center justify-center bg-bg-warm"
+    aria-hidden="true"
+  >
+    <div class="flex flex-col items-center gap-3 text-text-secondary">
+      <svg class="h-8 w-8 animate-spin text-gov-navy" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4Z" />
+      </svg>
+      <span class="text-sm">Cargando mapa…</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initMap } from './map-init';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const mapEl = document.getElementById('map') as HTMLElement | null;
+    if (!mapEl) return;
+    initMap(mapEl);
+    const loader = document.getElementById('map-loading');
+    if (loader) loader.remove();
+  });
+</script>

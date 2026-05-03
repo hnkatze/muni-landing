@@ -1,0 +1,61 @@
+---
+import { MAP_CATEGORIES, CATEGORY_LABELS, CATEGORY_COLORS } from '../../types/map';
+
+/** Hash slug → category (kept in sync with HASH_TO_CATEGORY in map.ts). */
+const CATEGORY_HASH: Record<string, string> = {
+  'oficinas-municipales':  'oficinas',
+  'escuelas':              'escuelas',
+  'centros-salud':         'salud',
+  'parques-mercados':      'parques',
+  'atractivos-turisticos': 'turismo',
+  'barrios-aldeas':        'barrios',
+};
+---
+
+<div
+  class="flex flex-wrap gap-2"
+  role="group"
+  aria-label="Filtrar puntos en el mapa por categoría"
+>
+  {/* "Todos" chip */}
+  <button
+    type="button"
+    data-filter="all"
+    aria-pressed="true"
+    class="filter-chip rounded-full border border-border-warm bg-gov-navy px-3 py-1.5 text-xs font-medium text-white transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy focus-visible:ring-offset-2 hover:bg-gov-navy-light"
+  >
+    Todos
+  </button>
+
+  {MAP_CATEGORIES.map((cat) => {
+    const colors = CATEGORY_COLORS[cat];
+    const hash = CATEGORY_HASH[cat];
+    return (
+      <button
+        type="button"
+        data-filter={cat}
+        data-hash={hash}
+        aria-pressed="false"
+        class:list={[
+          'filter-chip rounded-full border px-3 py-1.5 text-xs font-medium transition-all duration-150',
+          'border-border-warm bg-white text-text-secondary hover:border-gov-navy/30 hover:text-gov-navy',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy focus-visible:ring-offset-2',
+          'aria-pressed:border-transparent',
+          `aria-pressed:[background-color:${colors.hex}]`,
+          'aria-pressed:text-white',
+        ]}
+        style={`--chip-color: ${colors.hex}`}
+      >
+        {CATEGORY_LABELS[cat]}
+      </button>
+    );
+  })}
+</div>
+
+<style>
+  .filter-chip[aria-pressed="true"]:not([data-filter="all"]) {
+    background-color: var(--chip-color);
+    color: white;
+    border-color: transparent;
+  }
+</style>
