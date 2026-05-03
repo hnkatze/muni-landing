@@ -1,0 +1,40 @@
+---
+import type { NoticiaCategory } from '../types/index';
+
+interface Props {
+  currentCategory?: NoticiaCategory | undefined;
+}
+
+const { currentCategory } = Astro.props;
+
+const categories: Array<{ value: NoticiaCategory | 'todas'; label: string }> = [
+  { value: 'todas', label: 'Todas' },
+  { value: 'comunicado', label: 'Comunicados' },
+  { value: 'evento', label: 'Eventos' },
+  { value: 'obra', label: 'Obras' },
+  { value: 'alerta', label: 'Alertas' },
+  { value: 'transparencia', label: 'Transparencia' },
+];
+---
+
+<nav aria-label="Filtrar por categoría" class="flex flex-wrap items-center gap-2">
+  {categories.map(({ value, label }) => {
+    const isActive = value === 'todas' ? !currentCategory : currentCategory === value;
+    const href = value === 'todas' ? '/noticias' : `/noticias/categoria/${value}`;
+    return (
+      <a
+        href={href}
+        aria-current={isActive ? 'page' : undefined}
+        class:list={[
+          'rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gov-teal',
+          isActive
+            ? 'bg-gov-navy text-white'
+            : 'bg-bg-warm text-text-secondary hover:bg-gov-navy/10 hover:text-gov-navy',
+        ]}
+      >
+        {label}
+      </a>
+    );
+  })}
+</nav>

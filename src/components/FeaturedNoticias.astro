@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import NoticiaCard from './NoticiaCard.astro';
+
+const allNoticias = await getCollection('noticias');
+
+const featured = allNoticias
+  .filter((n) => n.data.featured)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+
+// Fallback: if fewer than 3 featured, pad with latest non-featured
+const remaining = allNoticias
+  .filter((n) => !n.data.featured)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+const noticias = [...featured, ...remaining].slice(0, 3);
+---
+
+{noticias.length > 0 && (
+  <section
+    class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8"
+    aria-labelledby="noticias-heading"
+  >
+    <div class="text-center">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Mantente informado</p>
+      <h2 id="noticias-heading" class="mt-2 text-4xl font-bold text-gov-navy lg:text-5xl">
+        Noticias y Boletín
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-text-secondary leading-relaxed">
+        Entérate de las últimas novedades, obras y comunicados de la Municipalidad de Bonito Oriental.
+      </p>
+    </div>
+
+    <ul
+      class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      role="list"
+      aria-label="Noticias destacadas"
+    >
+      {noticias.map((entry) => (
+        <li>
+          <NoticiaCard entry={entry} featured={entry.data.featured} />
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-10 text-center">
+      <a
+        href="/noticias"
+        class="inline-flex items-center gap-2 rounded-full border border-gov-navy px-8 py-3 text-sm font-semibold text-gov-navy hover:bg-gov-navy hover:text-white transition-colors duration-200"
+      >
+        Ver todas las noticias
+      </a>
+    </div>
+  </section>
+)}

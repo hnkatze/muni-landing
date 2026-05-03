@@ -1,0 +1,149 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import NoticiaCard from '../../components/NoticiaCard.astro';
+import { Icon } from 'astro-icon/components';
+import type { NoticiaCategory } from '../../types/index';
+
+export async function getStaticPaths() {
+  const noticias = await getCollection('noticias');
+  return noticias.map((entry) => ({
+    params: { slug: entry.data.slug ?? entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const { title, excerpt, publishedAt, category, author, tags, image } = entry.data;
+
+const categoryLabels: Record<NoticiaCategory, string> = {
+  comunicado: 'Comunicado',
+  evento: 'Evento',
+  obra: 'Obra',
+  alerta: 'Alerta',
+  transparencia: 'Transparencia',
+};
+
+const publishedFormatted = publishedAt.toLocaleDateString('es-HN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Related posts: same category, exclude current, up to 3
+const allNoticias = await getCollection('noticias');
+const related = allNoticias
+  .filter((n) => n.id !== entry.id && n.data.category === category)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+---
+
+<Layout
+  title={`${title} | Noticias | Bonito Oriental`}
+  description={excerpt}
+>
+  {/* Hero */}
+  <section class="bg-gov-navy py-16 px-4">
+    <div class="mx-auto max-w-4xl">
+      <a
+        href="/noticias"
+        class="inline-flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors mb-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40"
+      >
+        <Icon name="lucide:arrow-left" class="h-4 w-4" aria-hidden="true" />
+        Volver a noticias
+      </a>
+
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-white/80">
+          {categoryLabels[category]}
+        </span>
+        {tags.map((tag) => (
+          <span class="rounded-full bg-muni-gold/20 px-2.5 py-0.5 text-xs font-medium text-muni-gold-soft">
+            #{tag}
+          </span>
+        ))}
+      </div>
+
+      <h1 class="text-3xl font-bold text-white md:text-4xl lg:text-5xl leading-tight">{title}</h1>
+      <p class="mt-3 text-white/60 leading-relaxed max-w-3xl">{excerpt}</p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-4 text-sm text-white/50">
+        <div class="flex items-center gap-1.5">
+          <Icon name="lucide:calendar" class="h-4 w-4" aria-hidden="true" />
+          <time datetime={publishedAt.toISOString().split('T')[0]}>
+            {publishedFormatted}
+          </time>
+        </div>
+        {author && (
+          <div class="flex items-center gap-1.5">
+            <Icon name="lucide:user" class="h-4 w-4" aria-hidden="true" />
+            <span>{author}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {/* Hero image */}
+  {image && (
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 -mt-8">
+      <div class="overflow-hidden rounded-3xl shadow-xl">
+        <img
+          src={image.src}
+          alt={image.alt}
+          class="w-full h-64 md:h-80 object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    </div>
+  )}
+
+  {/* Body */}
+  <article
+    class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8"
+    aria-labelledby="noticia-title"
+  >
+    <div class="prose prose-lg max-w-none
+      prose-headings:text-gov-navy
+      prose-a:text-gov-teal prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-gov-navy
+      prose-blockquote:border-l-muni-gold prose-blockquote:text-text-secondary
+    ">
+      <Content />
+    </div>
+
+    {/* Tags */}
+    {tags.length > 0 && (
+      <div class="mt-10 flex flex-wrap items-center gap-2 border-t border-border-warm pt-8">
+        <span class="text-xs font-semibold uppercase tracking-wide text-text-secondary mr-2">Etiquetas:</span>
+        {tags.map((tag) => (
+          <span class="rounded-full bg-bg-warm px-3 py-1 text-xs text-text-secondary">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </article>
+
+  {/* Related posts */}
+  {related.length > 0 && (
+    <section
+      class="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8"
+      aria-labelledby="related-heading"
+    >
+      <h2 id="related-heading" class="mb-8 text-2xl font-bold text-gov-navy">
+        Más noticias de {categoryLabels[category]}
+      </h2>
+      <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        {related.map((relEntry) => (
+          <li>
+            <NoticiaCard entry={relEntry} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Layout>
