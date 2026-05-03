@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import VacancyCard from '../../components/VacancyCard.astro';
+import VacancyEmptyState from '../../components/VacancyEmptyState.astro';
+
+const allVacantes = await getCollection('vacantes');
+
+// Sort by deadline ascending (soonest closing first)
+const vacantes = allVacantes.sort(
+  (a, b) => a.data.deadline.getTime() - b.data.deadline.getTime()
+);
+---
+
+<Layout
+  title="Empleo | Bonito Oriental"
+  description="Conoce las plazas de empleo disponibles en la Municipalidad de Bonito Oriental."
+>
+  {/* Hero banner */}
+  <section class="bg-gov-navy py-20 px-4">
+    <div class="mx-auto max-w-7xl text-center">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Oportunidades</p>
+      <h1 class="mt-3 text-4xl font-bold text-white md:text-5xl lg:text-6xl">Vacantes de Empleo</h1>
+      <p class="mt-4 text-lg text-white/50 max-w-2xl mx-auto">
+        Plazas abiertas en la Municipalidad de Bonito Oriental. Consulta los requisitos y participa en los procesos de selección.
+      </p>
+    </div>
+  </section>
+
+  {/* Listing */}
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    {vacantes.length === 0 ? (
+      <VacancyEmptyState />
+    ) : (
+      <>
+        <p class="mb-8 text-sm text-text-secondary">
+          {vacantes.length} {vacantes.length === 1 ? 'plaza disponible' : 'plazas disponibles'}
+        </p>
+        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {vacantes.map((v) => (
+            <li>
+              <VacancyCard
+                title={v.data.title}
+                dependencia={v.data.dependencia}
+                tipo={v.data.tipo}
+                deadline={v.data.deadline}
+                slug={v.id}
+              />
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </section>
+</Layout>

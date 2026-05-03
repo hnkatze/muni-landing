@@ -1,0 +1,67 @@
+---
+import { Icon } from 'astro-icon/components';
+import VacancyStatusBadge from './VacancyStatusBadge.astro';
+import type { VacancyStatus } from './VacancyStatusBadge.astro';
+
+interface Props {
+  title: string;
+  dependencia: string;
+  tipo: 'concurso' | 'contratacion-directa';
+  deadline: Date;
+  slug: string;
+}
+
+const { title, dependencia, tipo, deadline, slug } = Astro.props;
+
+const buildDate = new Date();
+buildDate.setHours(0, 0, 0, 0);
+const deadlineDate = new Date(deadline);
+deadlineDate.setHours(0, 0, 0, 0);
+const daysLeft = Math.ceil((deadlineDate.getTime() - buildDate.getTime()) / (1000 * 60 * 60 * 24));
+
+const status: VacancyStatus =
+  daysLeft < 0 ? 'Cerrada' : daysLeft <= 7 ? 'Por cerrar' : 'Abierta';
+
+const tipoLabel = tipo === 'concurso' ? 'Concurso' : 'Contratación Directa';
+
+const deadlineFormatted = deadline.toLocaleDateString('es-HN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<article class="flex flex-col rounded-3xl bg-white border border-border-warm hover:-translate-y-1 hover:shadow-lg hover:shadow-gov-navy/5 transition-all duration-300">
+  <div class="flex-1 p-6">
+    <div class="flex flex-wrap items-center gap-2">
+      <VacancyStatusBadge status={status} />
+      <span class="rounded-full bg-gov-navy/8 px-2.5 py-0.5 text-xs font-medium text-gov-navy">
+        {tipoLabel}
+      </span>
+    </div>
+
+    <h3 class="mt-3 text-lg font-bold text-gov-navy leading-snug">{title}</h3>
+
+    <div class="mt-2 flex items-center gap-1.5 text-sm text-text-secondary">
+      <Icon name="lucide:building-2" class="h-4 w-4 shrink-0 text-muni-gold" aria-hidden="true" />
+      <span>{dependencia}</span>
+    </div>
+
+    <div class="mt-1.5 flex items-center gap-1.5 text-sm text-text-secondary">
+      <Icon name="lucide:calendar" class="h-4 w-4 shrink-0 text-text-secondary/60" aria-hidden="true" />
+      <span>
+        Cierra: <time datetime={deadline.toISOString().split('T')[0]}>{deadlineFormatted}</time>
+      </span>
+    </div>
+  </div>
+
+  <div class="border-t border-border-warm p-5">
+    <a
+      href={`/empleo/${slug}`}
+      class="inline-flex items-center gap-1.5 text-sm font-semibold text-gov-navy hover:text-gov-teal transition-colors duration-200"
+    >
+      Ver convocatoria
+      <Icon name="lucide:arrow-right" class="h-4 w-4" aria-hidden="true" />
+    </a>
+  </div>
+</article>

@@ -1,0 +1,173 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import VacancyStatusBadge from '../../components/VacancyStatusBadge.astro';
+import type { VacancyStatus } from '../../components/VacancyStatusBadge.astro';
+import { Icon } from 'astro-icon/components';
+import DownloadButton from '../../components/DownloadButton.astro';
+
+export async function getStaticPaths() {
+  const vacantes = await getCollection('vacantes');
+  return vacantes.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const {
+  title,
+  dependencia,
+  tipo,
+  requisitos,
+  responsabilidades,
+  salario,
+  deadline,
+  convocatoria_pdf,
+  applyUrl,
+  publishedAt,
+} = entry.data;
+
+// Derive status at build time
+const buildDate = new Date();
+buildDate.setHours(0, 0, 0, 0);
+const deadlineDate = new Date(deadline);
+deadlineDate.setHours(0, 0, 0, 0);
+const daysLeft = Math.ceil((deadlineDate.getTime() - buildDate.getTime()) / (1000 * 60 * 60 * 24));
+const status: VacancyStatus =
+  daysLeft < 0 ? 'Cerrada' : daysLeft <= 7 ? 'Por cerrar' : 'Abierta';
+
+const tipoLabel = tipo === 'concurso' ? 'Concurso' : 'Contratación Directa';
+
+const deadlineFormatted = deadline.toLocaleDateString('es-HN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const publishedFormatted = publishedAt.toLocaleDateString('es-HN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Layout
+  title={`${title} | Empleo | Bonito Oriental`}
+  description={`Convocatoria: ${title} — ${dependencia}. Fecha límite: ${deadlineFormatted}.`}
+>
+  {/* Hero banner */}
+  <section class="bg-gov-navy py-16 px-4">
+    <div class="mx-auto max-w-4xl">
+      <a
+        href="/empleo"
+        class="inline-flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors mb-6"
+      >
+        <Icon name="lucide:arrow-left" class="h-4 w-4" aria-hidden="true" />
+        Volver a vacantes
+      </a>
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <VacancyStatusBadge status={status} />
+        <span class="rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-white/80">
+          {tipoLabel}
+        </span>
+      </div>
+      <h1 class="text-3xl font-bold text-white md:text-4xl lg:text-5xl leading-tight">{title}</h1>
+      <p class="mt-3 text-lg text-muni-gold font-semibold">{dependencia}</p>
+    </div>
+  </section>
+
+  {/* Content */}
+  <article class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    {/* Meta strip */}
+    <div class="grid grid-cols-1 gap-4 rounded-2xl border border-border-warm bg-white p-6 sm:grid-cols-3 mb-10">
+      <div class="flex items-start gap-3">
+        <Icon name="lucide:calendar" class="mt-0.5 h-5 w-5 shrink-0 text-muni-gold" aria-hidden="true" />
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-text-secondary">Fecha límite</p>
+          <time datetime={deadline.toISOString().split('T')[0]} class="text-sm font-medium text-gov-navy">
+            {deadlineFormatted}
+          </time>
+        </div>
+      </div>
+      <div class="flex items-start gap-3">
+        <Icon name="lucide:clock" class="mt-0.5 h-5 w-5 shrink-0 text-muni-gold" aria-hidden="true" />
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-text-secondary">Publicado</p>
+          <time datetime={publishedAt.toISOString().split('T')[0]} class="text-sm font-medium text-gov-navy">
+            {publishedFormatted}
+          </time>
+        </div>
+      </div>
+      {salario && (
+        <div class="flex items-start gap-3">
+          <Icon name="lucide:banknote" class="mt-0.5 h-5 w-5 shrink-0 text-muni-gold" aria-hidden="true" />
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-text-secondary">Salario</p>
+            <p class="text-sm font-medium text-gov-navy">{salario}</p>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* Requisitos */}
+    <section aria-labelledby="requisitos-heading" class="mb-8">
+      <h2 id="requisitos-heading" class="text-xl font-bold text-gov-navy mb-4 flex items-center gap-2">
+        <Icon name="lucide:check-circle" class="h-5 w-5 text-muni-gold" aria-hidden="true" />
+        Requisitos
+      </h2>
+      <ul class="space-y-2" role="list">
+        {requisitos.map((req) => (
+          <li class="flex items-start gap-2.5 text-sm text-text-secondary">
+            <Icon name="lucide:circle-dot" class="mt-0.5 h-4 w-4 shrink-0 text-gov-navy/40" aria-hidden="true" />
+            {req}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {/* Responsabilidades */}
+    {responsabilidades && responsabilidades.length > 0 && (
+      <section aria-labelledby="responsabilidades-heading" class="mb-8">
+        <h2 id="responsabilidades-heading" class="text-xl font-bold text-gov-navy mb-4 flex items-center gap-2">
+          <Icon name="lucide:list-checks" class="h-5 w-5 text-muni-gold" aria-hidden="true" />
+          Responsabilidades
+        </h2>
+        <ul class="space-y-2" role="list">
+          {responsabilidades.map((r) => (
+            <li class="flex items-start gap-2.5 text-sm text-text-secondary">
+              <Icon name="lucide:circle-dot" class="mt-0.5 h-4 w-4 shrink-0 text-gov-navy/40" aria-hidden="true" />
+              {r}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {/* Markdown body (additional description if present) */}
+    <div class="prose prose-sm max-w-none text-text-secondary mb-10">
+      <Content />
+    </div>
+
+    {/* Actions */}
+    <div class="flex flex-wrap items-center gap-4 border-t border-border-warm pt-8">
+      <DownloadButton
+        label="Descargar convocatoria (PDF)"
+        href={`/vacantes/${convocatoria_pdf}`}
+      />
+      {applyUrl && status !== 'Cerrada' && (
+        <a
+          href={applyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-full bg-gov-navy px-6 py-2.5 text-sm font-medium text-white hover:bg-gov-navy-light transition-colors duration-200"
+        >
+          <Icon name="lucide:send" class="h-4 w-4" aria-hidden="true" />
+          Aplicar en línea
+        </a>
+      )}
+    </div>
+  </article>
+</Layout>
