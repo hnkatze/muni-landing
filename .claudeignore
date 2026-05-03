@@ -1,0 +1,78 @@
+# ============================================
+# .claudeignore — paths that add no value to Claude's context
+# ============================================
+
+# ---- Build output (generated, not source) ----
+dist/
+.astro/
+build/
+out/
+
+# ---- Dependencies (huge, never edit by hand) ----
+node_modules/
+.pnpm-store/
+.yarn/
+
+# ---- Lock files (rarely useful for context) ----
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+skills-lock.json
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+firebase-debug.log
+
+# ---- Environment / secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- IDE / editor ----
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ---- Git internals ----
+.git/
+
+# ---- Static binary assets (Claude can't read meaningfully) ----
+public/image/
+public/doc/
+src/assets/**/*.png
+src/assets/**/*.jpg
+src/assets/**/*.jpeg
+src/assets/**/*.webp
+src/assets/**/*.ico
+src/assets/**/*.pdf
+**/*.woff
+**/*.woff2
+**/*.ttf
+**/*.eot
+**/*.mp4
+**/*.webm
+**/*.mp3
+**/*.wav
+
+# ---- SDD / agent-internal artifacts ----
+# Sub-agents read these via engram or specific tools; don't pollute main context
+openspec/changes/*/specs.md
+openspec/changes/*/tasks.md
+.agents/
+memory/
+
+# ---- Misc generated / cache ----
+coverage/
+.cache/
+.turbo/
+.next/
+.vercel/
+.netlify/

@@ -34,3 +34,8 @@ firebase-debug.log
 
 # openspec (SDD artifacts)
 openspec/
+
+# agent / plugin internal data
+.agents/
+.atl/
+skills-lock.json
