@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DocumentTable from '../../components/DocumentTable.astro';
+
+// Estados financieros — empty until real data is loaded
+const estadosRows: { year: string; tipo: string; pdfUrl: string }[] = [];
+
+const columns = ['Año', 'Tipo de Estado', 'Documento'];
+const rowKeys = ['year', 'tipo', 'pdfUrl'];
+---
+
+<Layout
+  title="Estados Financieros | Transparencia | Bonito Oriental"
+  description="Estados financieros auditados — Municipalidad de Bonito Oriental."
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <nav aria-label="Ubicación actual" class="mb-6 text-sm text-text-secondary">
+      <ol class="flex items-center gap-1">
+        <li><a href="/transparencia" class="hover:text-gov-navy transition-colors">Transparencia</a></li>
+        <li aria-hidden="true" class="text-text-tertiary">›</li>
+        <li class="text-gov-navy font-medium" aria-current="page">Estados Financieros</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Transparencia Activa</p>
+      <h1 class="mt-1 text-3xl font-bold text-gov-navy md:text-4xl">Estados Financieros</h1>
+      <p class="mt-3 max-w-2xl text-sm text-text-secondary leading-relaxed">
+        Balance general, estado de resultados y estados financieros auditados
+        de la Municipalidad de Bonito Oriental.
+      </p>
+    </div>
+
+    <DocumentTable
+      caption="Estados financieros auditados por año"
+      columns={columns}
+      rows={estadosRows}
+      rowKeys={rowKeys}
+    />
+  </section>
+</Layout>

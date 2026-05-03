@@ -1,0 +1,14 @@
+[
+  {
+    "funcionario": "Alcalde Municipal — EJEMPLO",
+    "cargo": "Alcalde",
+    "year": 2024,
+    "pdfUrl": "/doc/transparencia/declaraciones/2024/declaracion-alcalde-2024.pdf"
+  },
+  {
+    "funcionario": "Vice-Alcalde — EJEMPLO",
+    "cargo": "Vice-Alcalde",
+    "year": 2024,
+    "pdfUrl": "/doc/transparencia/declaraciones/2024/declaracion-vice-alcalde-2024.pdf"
+  }
+]

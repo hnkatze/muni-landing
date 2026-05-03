@@ -1,0 +1,109 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+
+const cabildoEntries = await getCollection('cabildos');
+
+// Sort by date descending
+const cabildos = cabildoEntries.sort(
+  (a, b) => new Date(b.data.fecha).getTime() - new Date(a.data.fecha).getTime()
+);
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('es-HN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(date));
+---
+
+<Layout
+  title="Cabildos Abiertos | Transparencia | Bonito Oriental"
+  description="Actas y memorias de los cabildos abiertos — Municipalidad de Bonito Oriental."
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <nav aria-label="Ubicación actual" class="mb-6 text-sm text-text-secondary">
+      <ol class="flex items-center gap-1">
+        <li><a href="/transparencia" class="hover:text-gov-navy transition-colors">Transparencia</a></li>
+        <li aria-hidden="true" class="text-text-tertiary">›</li>
+        <li class="text-gov-navy font-medium" aria-current="page">Cabildos Abiertos</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Transparencia Activa</p>
+      <h1 class="mt-1 text-3xl font-bold text-gov-navy md:text-4xl">Cabildos Abiertos</h1>
+      <p class="mt-3 max-w-2xl text-sm text-text-secondary leading-relaxed">
+        Actas, agendas y memorias de los cabildos abiertos convocados por la
+        Municipalidad de Bonito Oriental. Los cabildos son espacios de
+        participación ciudadana conforme al artículo 92 de la Ley de
+        Municipalidades.
+      </p>
+    </div>
+
+    {cabildos.length === 0 ? (
+      <div
+        class="rounded-2xl border border-border-warm bg-bg-warm p-12 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <Icon name="lucide:mic-off" class="mx-auto h-10 w-10 text-text-tertiary" />
+        <p class="mt-4 text-sm text-text-secondary italic">
+          No hay registros de cabildos abiertos disponibles aún.
+        </p>
+      </div>
+    ) : (
+      <ul class="space-y-6" aria-label="Lista de cabildos abiertos">
+        {cabildos.map((cabildo) => (
+          <li class="reveal rounded-2xl border border-border-warm bg-white p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div class="flex-1">
+                <h2 class="text-lg font-bold text-gov-navy">{cabildo.data.title}</h2>
+                <time
+                  datetime={new Date(cabildo.data.fecha).toISOString().slice(0, 10)}
+                  class="mt-1 block text-sm text-muni-gold font-semibold"
+                >
+                  {formatDate(cabildo.data.fecha)}
+                </time>
+                {cabildo.data.lugar && (
+                  <p class="mt-1 flex items-center gap-1 text-sm text-text-secondary">
+                    <Icon name="lucide:map-pin" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+                    {cabildo.data.lugar}
+                  </p>
+                )}
+
+                {cabildo.data.agenda.length > 0 && (
+                  <div class="mt-3">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-text-tertiary mb-1">
+                      Agenda
+                    </p>
+                    <ol class="list-decimal list-inside space-y-0.5 text-sm text-text-secondary">
+                      {cabildo.data.agenda.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+              </div>
+
+              {cabildo.data.acta_pdf && (
+                <div class="flex-shrink-0">
+                  <a
+                    href={cabildo.data.acta_pdf}
+                    download
+                    aria-label={`Descargar acta del cabildo ${cabildo.data.title} — PDF`}
+                    class="inline-flex items-center gap-2 rounded-full border border-border-warm bg-white px-5 py-2 text-sm font-medium text-gov-navy hover:bg-bg-warm transition-all duration-300"
+                  >
+                    <Icon name="lucide:download" class="h-4 w-4" aria-hidden="true" />
+                    Descargar Acta
+                  </a>
+                </div>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Layout>

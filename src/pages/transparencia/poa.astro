@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DocumentTable from '../../components/DocumentTable.astro';
+import DownloadButton from '../../components/DownloadButton.astro';
+
+// POA data — empty array until real data is loaded
+const poaRows: { year: string; description: string; pdfUrl: string }[] = [];
+
+const columns = ['Año', 'Descripción', 'Documento'];
+const rowKeys = ['year', 'description', 'pdfUrl'];
+---
+
+<Layout
+  title="Plan Operativo Anual | Transparencia | Bonito Oriental"
+  description="Planes Operativos Anuales — Municipalidad de Bonito Oriental."
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <nav aria-label="Ubicación actual" class="mb-6 text-sm text-text-secondary">
+      <ol class="flex items-center gap-1">
+        <li><a href="/transparencia" class="hover:text-gov-navy transition-colors">Transparencia</a></li>
+        <li aria-hidden="true" class="text-text-tertiary">›</li>
+        <li class="text-gov-navy font-medium" aria-current="page">Plan Operativo Anual</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Transparencia Activa</p>
+      <h1 class="mt-1 text-3xl font-bold text-gov-navy md:text-4xl">Plan Operativo Anual (POA)</h1>
+      <p class="mt-3 max-w-2xl text-sm text-text-secondary leading-relaxed">
+        Planes operativos anuales aprobados que establecen las metas,
+        actividades y recursos asignados a cada dependencia municipal.
+      </p>
+    </div>
+
+    <DocumentTable
+      caption="Planes Operativos Anuales por dependencia y año"
+      columns={columns}
+      rows={poaRows}
+      rowKeys={rowKeys}
+    />
+  </section>
+</Layout>

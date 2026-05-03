@@ -1,0 +1,26 @@
+[
+  {
+    "cargo": "Alcalde Municipal — EJEMPLO",
+    "dependencia": "Alcaldía",
+    "salarioMensual": "L. 28,000.00",
+    "year": 2024
+  },
+  {
+    "cargo": "Vice-Alcalde — EJEMPLO",
+    "dependencia": "Alcaldía",
+    "salarioMensual": "L. 20,000.00",
+    "year": 2024
+  },
+  {
+    "cargo": "Secretario Municipal — EJEMPLO",
+    "dependencia": "Secretaría",
+    "salarioMensual": "L. 18,000.00",
+    "year": 2024
+  },
+  {
+    "cargo": "Director Financiero — EJEMPLO",
+    "dependencia": "Unidad de Administración Financiera",
+    "salarioMensual": "L. 22,000.00",
+    "year": 2024
+  }
+]

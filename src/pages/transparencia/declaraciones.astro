@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DocumentTable from '../../components/DocumentTable.astro';
+import DownloadButton from '../../components/DownloadButton.astro';
+import type { DeclaracionRow } from '../../types/transparencia';
+import declaracionesData from '../../data/transparencia/declaraciones.json';
+
+const rows = declaracionesData as DeclaracionRow[];
+
+const columns = ['Funcionario', 'Cargo', 'Año', 'Documento'];
+const rowKeys = ['funcionario', 'cargo', 'year', 'pdfUrl'];
+
+const tableRows = rows.map((r) => ({
+  funcionario: r.funcionario,
+  cargo: r.cargo,
+  year: String(r.year),
+  pdfUrl: r.pdfUrl ? 'Disponible' : 'No disponible',
+}));
+---
+
+<Layout
+  title="Declaraciones Juradas | Transparencia | Bonito Oriental"
+  description="Declaraciones juradas de funcionarios — Municipalidad de Bonito Oriental."
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <nav aria-label="Ubicación actual" class="mb-6 text-sm text-text-secondary">
+      <ol class="flex items-center gap-1">
+        <li><a href="/transparencia" class="hover:text-gov-navy transition-colors">Transparencia</a></li>
+        <li aria-hidden="true" class="text-text-tertiary">›</li>
+        <li class="text-gov-navy font-medium" aria-current="page">Declaraciones Juradas</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Transparencia Activa</p>
+      <h1 class="mt-1 text-3xl font-bold text-gov-navy md:text-4xl">Declaraciones Juradas</h1>
+      <p class="mt-3 max-w-2xl text-sm text-text-secondary leading-relaxed">
+        Declaraciones juradas de bienes de los funcionarios municipales
+        electos, conforme al artículo 56 de la Ley para el Establecimiento de
+        una Visión de País (LIBOAS).
+      </p>
+    </div>
+
+    <DocumentTable
+      caption="Declaraciones juradas de funcionarios municipales"
+      columns={columns}
+      rows={tableRows}
+      rowKeys={rowKeys}
+    />
+
+    {rows.filter((r) => r.pdfUrl).length > 0 && (
+      <div class="mt-8">
+        <h2 class="mb-4 text-lg font-semibold text-gov-navy">Documentos para Descarga</h2>
+        <ul class="flex flex-wrap gap-3" aria-label="Declaraciones juradas disponibles">
+          {rows.filter((r) => r.pdfUrl).map((r) => (
+            <li>
+              <DownloadButton
+                label={`Descargar Declaración — ${r.funcionario} ${r.year} — PDF`}
+                href={r.pdfUrl!}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+</Layout>

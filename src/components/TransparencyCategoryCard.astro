@@ -1,0 +1,48 @@
+---
+/**
+ * TransparencyCategoryCard — hub card linking to a transparency category page.
+ * Uses the same visual language as ServiceCard but as an <a> element.
+ */
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  href: string;
+  lastUpdated?: string;
+}
+
+const { title, description, icon, href, lastUpdated } = Astro.props;
+---
+
+<a
+  href={href}
+  aria-label={`${title} — ${lastUpdated ? `Última actualización: ${lastUpdated}` : 'Sin datos'}`}
+  class="reveal group flex flex-col rounded-3xl bg-white border border-border-warm p-6 shadow-sm
+         hover:shadow-xl hover:shadow-gov-navy/8 hover:-translate-y-1 transition-all duration-300
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy focus-visible:ring-offset-2"
+>
+  <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-bg-warm
+              group-hover:bg-gov-navy transition-colors duration-300">
+    <Icon
+      name={icon}
+      class="h-6 w-6 text-gov-navy group-hover:text-white transition-colors duration-300"
+    />
+  </div>
+
+  <h2 class="mt-4 text-base font-bold text-gov-navy group-hover:text-gov-teal transition-colors duration-200">
+    {title}
+  </h2>
+
+  <p class="mt-1 flex-1 text-sm text-text-secondary leading-relaxed">
+    {description}
+  </p>
+
+  <div class="mt-4 flex items-center justify-between border-t border-border-warm pt-3">
+    <span class="text-xs text-text-tertiary">
+      {lastUpdated ? `Actualizado: ${lastUpdated}` : 'Sin datos'}
+    </span>
+    <Icon name="lucide:arrow-right" class="h-4 w-4 text-text-tertiary group-hover:text-gov-navy transition-colors duration-200" />
+  </div>
+</a>

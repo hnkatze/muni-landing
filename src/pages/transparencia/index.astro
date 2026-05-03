@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TransparencyCategoryCard from '../../components/TransparencyCategoryCard.astro';
+import type { TransparenciaCategoryMeta } from '../../types/transparencia';
+
+const categories: TransparenciaCategoryMeta[] = [
+  {
+    slug: 'presupuesto',
+    label: 'Presupuesto Municipal',
+    description: 'Presupuestos anuales aprobados por el Cabildo Municipal.',
+    icon: 'lucide:file-spreadsheet',
+    lastUpdated: '2024',
+  },
+  {
+    slug: 'ejecucion',
+    label: 'Ejecución Presupuestaria',
+    description: 'Informes trimestrales de ejecución del presupuesto.',
+    icon: 'lucide:bar-chart-2',
+    lastUpdated: '2024',
+  },
+  {
+    slug: 'poa',
+    label: 'Plan Operativo Anual',
+    description: 'Planes operativos anuales de las dependencias municipales.',
+    icon: 'lucide:clipboard-list',
+    lastUpdated: '2024',
+  },
+  {
+    slug: 'estados-financieros',
+    label: 'Estados Financieros',
+    description: 'Balance general y estados de resultados auditados.',
+    icon: 'lucide:landmark',
+    lastUpdated: '2024',
+  },
+  {
+    slug: 'salarios',
+    label: 'Salarios Públicos',
+    description: 'Escala salarial de servidores públicos municipales.',
+    icon: 'lucide:users',
+    lastUpdated: '2024',
+  },
+  {
+    slug: 'declaraciones',
+    label: 'Declaraciones Juradas',
+    description: 'Declaraciones juradas de los funcionarios electos.',
+    icon: 'lucide:scroll-text',
+    lastUpdated: '2024',
+  },
+  {
+    slug: 'cabildos',
+    label: 'Cabildos Abiertos',
+    description: 'Actas y memorias de los cabildos abiertos celebrados.',
+    icon: 'lucide:mic',
+    lastUpdated: undefined,
+  },
+];
+---
+
+<Layout
+  title="Transparencia | Bonito Oriental"
+  description="Portal de transparencia activa de la Municipalidad de Bonito Oriental — cumplimiento LIBOAS."
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <!-- Page header -->
+    <div class="text-center">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">
+        Cumplimiento LIBOAS
+      </p>
+      <h1 class="mt-2 text-3xl font-bold text-gov-navy md:text-5xl">
+        Transparencia Activa
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-base text-text-secondary leading-relaxed">
+        La Municipalidad de Bonito Oriental pone a disposición de la ciudadanía
+        la información pública de conformidad con la Ley de Transparencia y
+        Acceso a la Información Pública (LTAIP) y la Ley para el Establecimiento
+        de una Visión de País (LIBOAS).
+      </p>
+    </div>
+
+    <!-- Category grid -->
+    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {categories.map((cat, i) => (
+        <div class:list={['delay-' + Math.min(i + 1, 5)]}>
+          <TransparencyCategoryCard
+            title={cat.label}
+            description={cat.description}
+            icon={cat.icon}
+            href={`/transparencia/${cat.slug}`}
+            lastUpdated={cat.lastUpdated}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Legal notice -->
+    <aside
+      aria-label="Nota legal"
+      class="mt-16 rounded-2xl border border-border-warm bg-bg-warm p-6 text-sm text-text-secondary leading-relaxed"
+    >
+      <p>
+        <strong class="text-gov-navy">Nota:</strong> La información publicada en
+        este portal corresponde a datos de ejemplo con fines demostrativos.
+        Próximamente se publicará la información oficial actualizada de la
+        Municipalidad de Bonito Oriental, Colón, Honduras.
+        Para solicitudes de información adicional puede dirigirse a la Unidad de
+        Transparencia Municipal.
+      </p>
+    </aside>
+  </section>
+</Layout>

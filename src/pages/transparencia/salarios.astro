@@ -1,0 +1,65 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DocumentTable from '../../components/DocumentTable.astro';
+import YearTabs from '../../components/YearTabs.astro';
+import type { SalarioRow } from '../../types/transparencia';
+import salariosData from '../../data/transparencia/salarios.json';
+
+const rows = salariosData as SalarioRow[];
+
+// Available years from the data
+const years = [...new Set(rows.map((r) => r.year))].sort((a, b) => b - a);
+const activeYear = years[0] ?? 2024;
+
+// Filter rows by active year
+const filteredRows = rows.filter((r) => r.year === activeYear);
+
+const columns = ['Cargo', 'Dependencia', 'Salario Mensual'];
+const rowKeys = ['cargo', 'dependencia', 'salarioMensual'];
+
+const tableRows = filteredRows.map((r) => ({
+  cargo: r.cargo,
+  dependencia: r.dependencia,
+  salarioMensual: r.salarioMensual,
+}));
+---
+
+<Layout
+  title="Salarios Públicos | Transparencia | Bonito Oriental"
+  description="Escala salarial de servidores públicos municipales — Municipalidad de Bonito Oriental."
+>
+  <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <nav aria-label="Ubicación actual" class="mb-6 text-sm text-text-secondary">
+      <ol class="flex items-center gap-1">
+        <li><a href="/transparencia" class="hover:text-gov-navy transition-colors">Transparencia</a></li>
+        <li aria-hidden="true" class="text-text-tertiary">›</li>
+        <li class="text-gov-navy font-medium" aria-current="page">Salarios Públicos</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8">
+      <p class="text-sm font-semibold uppercase tracking-widest text-muni-gold">Transparencia Activa</p>
+      <h1 class="mt-1 text-3xl font-bold text-gov-navy md:text-4xl">Salarios Públicos</h1>
+      <p class="mt-3 max-w-2xl text-sm text-text-secondary leading-relaxed">
+        Escala salarial de los servidores públicos municipales conforme al
+        artículo 13 de la Ley de Transparencia y Acceso a la Información Pública.
+        Los datos mostrados son de ejemplo.
+      </p>
+    </div>
+
+    {years.length > 1 && (
+      <YearTabs
+        years={years}
+        active={activeYear}
+        baseHref="/transparencia/salarios"
+      />
+    )}
+
+    <DocumentTable
+      caption={`Escala salarial de servidores públicos municipales — ${activeYear}`}
+      columns={columns}
+      rows={tableRows}
+      rowKeys={rowKeys}
+    />
+  </section>
+</Layout>

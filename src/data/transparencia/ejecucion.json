@@ -1,0 +1,18 @@
+[
+  {
+    "year": 2024,
+    "trimestre": "I Trimestre — EJEMPLO",
+    "aprobado": "L. 11,250,000.00",
+    "ejecutado": "L. 9,800,000.00",
+    "porcentaje": "87%",
+    "pdfUrl": "/doc/transparencia/ejecucion/2024/ejecucion-q1-2024.pdf"
+  },
+  {
+    "year": 2024,
+    "trimestre": "II Trimestre — EJEMPLO",
+    "aprobado": "L. 11,250,000.00",
+    "ejecutado": "L. 10,100,000.00",
+    "porcentaje": "90%",
+    "pdfUrl": "/doc/transparencia/ejecucion/2024/ejecucion-q2-2024.pdf"
+  }
+]

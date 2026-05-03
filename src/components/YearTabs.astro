@@ -1,0 +1,45 @@
+---
+/**
+ * YearTabs — static year filter navigation using anchor links.
+ * No JavaScript required — active state driven by `active` prop at build time.
+ */
+
+interface Props {
+  /** List of years to display as tabs */
+  years: number[];
+  /** The currently active year */
+  active: number;
+  /** Base href for tab links (e.g. "/transparencia/presupuesto") */
+  baseHref: string;
+}
+
+const { years, active, baseHref } = Astro.props;
+---
+
+<nav aria-label="Filtrar por año" class="mb-6">
+  <ul
+    role="tablist"
+    class="flex flex-wrap gap-2"
+  >
+    {years.map((year) => {
+      const isActive = year === active;
+      return (
+        <li role="presentation">
+          <a
+            href={`${baseHref}?year=${year}`}
+            role="tab"
+            aria-selected={isActive ? 'true' : 'false'}
+            class:list={[
+              'inline-block rounded-full border px-5 py-1.5 text-sm font-medium transition-colors duration-200',
+              isActive
+                ? 'border-gov-navy bg-gov-navy text-white'
+                : 'border-border-warm bg-white text-text-secondary hover:border-gov-navy hover:text-gov-navy',
+            ]}
+          >
+            {year}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</nav>
