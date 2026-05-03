@@ -1,10 +1,13 @@
 ---
-import { navLinks } from '../data/navigation';
+import { Icon } from 'astro-icon/components';
+import { navCallout, navGroups } from '../data/navigation';
 ---
 
 <nav id="main-nav" class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-border-warm">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
+
+      {/* ── Logo ─────────────────────────────────────────────────────────── */}
       <a href="/" class="flex items-center gap-3">
         <span class="sr-only">Bonito Oriental</span>
         <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gov-navy text-white font-bold text-sm">BO</div>
@@ -14,75 +17,338 @@ import { navLinks } from '../data/navigation';
         </div>
       </a>
 
-      {/* Desktop nav */}
-      <ul class="hidden lg:flex items-center gap-8">
-        {navLinks.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class="text-sm font-medium text-text-secondary hover:text-gov-navy transition-colors duration-200"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
+      {/* ── Desktop nav ──────────────────────────────────────────────────── */}
+      <ul class="hidden lg:flex items-center gap-1" role="menubar" aria-label="Menú principal">
+        {navGroups.map((entry) => {
+          if (entry.type === 'item') {
+            return (
+              <li role="none">
+                <a
+                  href={entry.href}
+                  class="px-3 py-2 text-sm font-medium text-text-secondary hover:text-gov-navy transition-colors duration-200 rounded-lg hover:bg-bg-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy"
+                  role="menuitem"
+                >
+                  {entry.label}
+                </a>
+              </li>
+            );
+          }
+
+          // NavGroup — skip rendering if no children
+          if (entry.children.length === 0) return null;
+
+          const groupId = `dropdown-${entry.label.toLowerCase().replace(/\s+/g, '-')}`;
+
+          return (
+            <li class="relative" role="none" data-dropdown>
+              <button
+                type="button"
+                class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-gov-navy transition-colors duration-200 rounded-lg hover:bg-bg-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls={groupId}
+                data-dropdown-trigger
+                role="menuitem"
+              >
+                {entry.label}
+                <Icon
+                  name="lucide:chevron-down"
+                  class="h-3.5 w-3.5 transition-transform duration-200"
+                  aria-hidden="true"
+                  data-chevron
+                />
+              </button>
+
+              <ul
+                id={groupId}
+                role="menu"
+                aria-label={entry.label}
+                class="absolute left-0 top-full mt-1 min-w-[200px] rounded-xl border border-border-warm bg-white shadow-lg shadow-text-primary/10 opacity-0 translate-y-1 pointer-events-none transition-all duration-200"
+                data-dropdown-panel
+              >
+                {entry.children.map((child) => (
+                  <li role="none">
+                    <a
+                      href={child.href}
+                      class="block px-4 py-2.5 text-sm text-text-secondary hover:text-gov-navy hover:bg-bg-warm transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gov-navy"
+                      role="menuitem"
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          );
+        })}
       </ul>
 
-      {/* Hamburger button */}
-      <button
-        id="menu-toggle"
-        type="button"
-        class="lg:hidden p-2 text-text-secondary hover:text-gov-navy"
-        aria-label="Abrir menú"
-        aria-expanded="false"
-      >
-        <svg id="icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-        <svg id="icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+      {/* ── Right side: emergency callout + hamburger ────────────────────── */}
+      <div class="flex items-center gap-3">
+        {navCallout && (
+          <a
+            href={navCallout.href}
+            class="hidden lg:flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+            aria-label="Acceso rápido a contactos de emergencia"
+          >
+            <Icon name={navCallout.icon} class="h-4 w-4" aria-hidden="true" />
+            {navCallout.label}
+          </a>
+        )}
+
+        {/* Hamburger */}
+        <button
+          id="menu-toggle"
+          type="button"
+          class="lg:hidden p-2 text-text-secondary hover:text-gov-navy rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy"
+          aria-label="Abrir menú"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg id="icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <svg id="icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
-  {/* Mobile menu */}
-  <div id="mobile-menu" class="hidden lg:hidden border-t border-border-warm bg-white">
-    <ul class="space-y-1 px-4 py-3">
-      {navLinks.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class="mobile-link block rounded-xl px-3 py-2 text-base font-medium text-text-secondary hover:bg-bg-warm hover:text-gov-navy transition-colors"
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
-    </ul>
+  {/* ── Mobile menu ──────────────────────────────────────────────────────── */}
+  <div
+    id="mobile-menu"
+    class="hidden lg:hidden border-t border-border-warm bg-white"
+    role="navigation"
+    aria-label="Menú móvil"
+  >
+    <div class="px-4 py-3 space-y-1">
+
+      {/* Emergency callout at top of mobile menu (when present) */}
+      {navCallout && (
+        <a
+          href={navCallout.href}
+          class="flex items-center gap-2 rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white mb-3"
+          aria-label="Acceso rápido a contactos de emergencia"
+        >
+          <Icon name={navCallout.icon} class="h-4 w-4" aria-hidden="true" />
+          {navCallout.label}
+        </a>
+      )}
+
+      {navGroups.map((entry) => {
+        if (entry.type === 'item') {
+          return (
+            <a
+              href={entry.href}
+              class="mobile-link block rounded-xl px-3 py-2 text-base font-medium text-text-secondary hover:bg-bg-warm hover:text-gov-navy transition-colors"
+            >
+              {entry.label}
+            </a>
+          );
+        }
+
+        // NavGroup — skip if no children
+        if (entry.children.length === 0) return null;
+
+        const accordionId = `mobile-accordion-${entry.label.toLowerCase().replace(/\s+/g, '-')}`;
+
+        return (
+          <div data-accordion>
+            <button
+              type="button"
+              class="flex w-full items-center justify-between rounded-xl px-3 py-2 text-base font-medium text-text-secondary hover:bg-bg-warm hover:text-gov-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy"
+              aria-expanded="false"
+              aria-controls={accordionId}
+              data-accordion-trigger
+            >
+              {entry.label}
+              <Icon
+                name="lucide:chevron-down"
+                class="h-4 w-4 transition-transform duration-200"
+                aria-hidden="true"
+                data-chevron
+              />
+            </button>
+            <ul
+              id={accordionId}
+              class="hidden mt-1 ml-4 space-y-0.5"
+              data-accordion-panel
+            >
+              {entry.children.map((child) => (
+                <li>
+                  <a
+                    href={child.href}
+                    class="mobile-link block rounded-xl px-3 py-2 text-sm text-text-secondary hover:bg-bg-warm hover:text-gov-navy transition-colors"
+                  >
+                    {child.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
   </div>
 </nav>
 
 <script>
-  const toggle = document.getElementById('menu-toggle')!;
-  const menu = document.getElementById('mobile-menu')!;
+  // ── Helpers ─────────────────────────────────────────────────────────────────
+
+  function openDropdown(trigger: HTMLButtonElement, panel: HTMLElement, chevron: SVGElement | null) {
+    trigger.setAttribute('aria-expanded', 'true');
+    panel.classList.remove('opacity-0', 'translate-y-1', 'pointer-events-none');
+    panel.classList.add('opacity-100', 'translate-y-0');
+    if (chevron) chevron.classList.add('rotate-180');
+  }
+
+  function closeDropdown(trigger: HTMLButtonElement, panel: HTMLElement, chevron: SVGElement | null) {
+    trigger.setAttribute('aria-expanded', 'false');
+    panel.classList.add('opacity-0', 'translate-y-1', 'pointer-events-none');
+    panel.classList.remove('opacity-100', 'translate-y-0');
+    if (chevron) chevron.classList.remove('rotate-180');
+  }
+
+  function getActiveDropdown(): { trigger: HTMLButtonElement; panel: HTMLElement; chevron: SVGElement | null } | null {
+    const item = document.querySelector<HTMLElement>('[data-dropdown]');
+    if (!item) return null;
+    // We'll look for the one that's open
+    const allTriggers = document.querySelectorAll<HTMLButtonElement>('[data-dropdown-trigger]');
+    for (const t of allTriggers) {
+      if (t.getAttribute('aria-expanded') === 'true') {
+        const li = t.closest<HTMLElement>('[data-dropdown]')!;
+        const panel = li.querySelector<HTMLElement>('[data-dropdown-panel]')!;
+        const chevron = t.querySelector<SVGElement>('[data-chevron]');
+        return { trigger: t, panel, chevron };
+      }
+    }
+    return null;
+  }
+
+  // ── Desktop dropdowns ────────────────────────────────────────────────────────
+
+  document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((dropdownItem) => {
+    const trigger = dropdownItem.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')!;
+    const panel = dropdownItem.querySelector<HTMLElement>('[data-dropdown-panel]')!;
+    const chevron = trigger.querySelector<SVGElement>('[data-chevron]');
+
+    // Click to toggle
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+
+      // Close all other dropdowns first
+      document.querySelectorAll<HTMLButtonElement>('[data-dropdown-trigger]').forEach((t) => {
+        if (t !== trigger && t.getAttribute('aria-expanded') === 'true') {
+          const li = t.closest<HTMLElement>('[data-dropdown]')!;
+          const p = li.querySelector<HTMLElement>('[data-dropdown-panel]')!;
+          const c = t.querySelector<SVGElement>('[data-chevron]');
+          closeDropdown(t, p, c);
+        }
+      });
+
+      if (isOpen) {
+        closeDropdown(trigger, panel, chevron);
+      } else {
+        openDropdown(trigger, panel, chevron);
+        // Focus first menuitem
+        const firstItem = panel.querySelector<HTMLAnchorElement>('[role="menuitem"]');
+        firstItem?.focus();
+      }
+    });
+
+    // Keyboard: arrow keys within open panel
+    panel.addEventListener('keydown', (e: KeyboardEvent) => {
+      const items = Array.from(panel.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]'));
+      const current = document.activeElement as HTMLAnchorElement;
+      const idx = items.indexOf(current);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        items[(idx + 1) % items.length]?.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        items[(idx - 1 + items.length) % items.length]?.focus();
+      } else if (e.key === 'Escape') {
+        closeDropdown(trigger, panel, chevron);
+        trigger.focus();
+      } else if (e.key === 'Tab') {
+        // Close on tab-out
+        closeDropdown(trigger, panel, chevron);
+      }
+    });
+
+    // Keyboard: Enter/Space on trigger already handled by click (button default)
+    // Escape on trigger
+    trigger.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeDropdown(trigger, panel, chevron);
+      }
+    });
+  });
+
+  // Outside click closes all dropdowns
+  document.addEventListener('click', () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-dropdown-trigger]').forEach((trigger) => {
+      if (trigger.getAttribute('aria-expanded') === 'true') {
+        const li = trigger.closest<HTMLElement>('[data-dropdown]')!;
+        const panel = li.querySelector<HTMLElement>('[data-dropdown-panel]')!;
+        const chevron = trigger.querySelector<SVGElement>('[data-chevron]');
+        closeDropdown(trigger, panel, chevron);
+      }
+    });
+  });
+
+  // Prevent panel clicks from bubbling to document (which would close it)
+  document.querySelectorAll<HTMLElement>('[data-dropdown-panel]').forEach((panel) => {
+    panel.addEventListener('click', (e) => e.stopPropagation());
+  });
+
+  // ── Mobile hamburger ─────────────────────────────────────────────────────────
+
+  const toggle = document.getElementById('menu-toggle') as HTMLButtonElement;
+  const mobileMenu = document.getElementById('mobile-menu')!;
   const iconOpen = document.getElementById('icon-open')!;
   const iconClose = document.getElementById('icon-close')!;
 
   toggle.addEventListener('click', () => {
-    const isOpen = !menu.classList.contains('hidden');
-    menu.classList.toggle('hidden');
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
     iconOpen.classList.toggle('hidden');
     iconClose.classList.toggle('hidden');
     toggle.setAttribute('aria-expanded', String(!isOpen));
   });
 
+  // Close mobile menu when a flat link is tapped
   document.querySelectorAll('.mobile-link').forEach((link) => {
     link.addEventListener('click', () => {
-      menu.classList.add('hidden');
+      mobileMenu.classList.add('hidden');
       iconOpen.classList.remove('hidden');
       iconClose.classList.add('hidden');
       toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // ── Mobile accordions ────────────────────────────────────────────────────────
+
+  document.querySelectorAll<HTMLElement>('[data-accordion]').forEach((accordionItem) => {
+    const trigger = accordionItem.querySelector<HTMLButtonElement>('[data-accordion-trigger]')!;
+    const panel = accordionItem.querySelector<HTMLElement>('[data-accordion-panel]')!;
+    const chevron = trigger.querySelector<SVGElement>('[data-chevron]');
+
+    trigger.addEventListener('click', () => {
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        trigger.setAttribute('aria-expanded', 'false');
+        panel.classList.add('hidden');
+        chevron?.classList.remove('rotate-180');
+      } else {
+        trigger.setAttribute('aria-expanded', 'true');
+        panel.classList.remove('hidden');
+        chevron?.classList.add('rotate-180');
+      }
     });
   });
 </script>
