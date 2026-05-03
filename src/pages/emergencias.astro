@@ -1,0 +1,250 @@
+---
+import { Icon } from 'astro-icon/components';
+import Layout from '../layouts/Layout.astro';
+import EmergencyContactCard from '../components/EmergencyContactCard.astro';
+import { emergencyContacts, CATEGORIES } from '../data/emergency-contacts';
+import type { EmergencyCategory } from '../data/emergency-contacts';
+
+// Group contacts by category, preserving the defined order
+const grouped = Object.fromEntries(
+  CATEGORIES.map((cat) => [cat, emergencyContacts.filter((c) => c.category === cat)])
+) as Record<EmergencyCategory, typeof emergencyContacts>;
+
+// Category display metadata
+const categoryMeta: Record<EmergencyCategory, { label: string; description: string; icon: string; accentClass: string }> = {
+  'vida-critica': {
+    label: 'Vida Crítica',
+    description: 'Emergencias con riesgo de vida. Llama de inmediato.',
+    icon: 'lucide:siren',
+    accentClass: 'text-red-600',
+  },
+  'seguridad': {
+    label: 'Seguridad Pública',
+    description: 'Policía nacional y municipal para denuncias y orden público.',
+    icon: 'lucide:shield',
+    accentClass: 'text-gov-navy',
+  },
+  'salud': {
+    label: 'Salud',
+    description: 'Hospitales y centros de salud en Bonito Oriental y Tocoa.',
+    icon: 'lucide:hospital',
+    accentClass: 'text-muni-green',
+  },
+  'servicios-publicos': {
+    label: 'Servicios Públicos',
+    description: 'Reportes de fallas en electricidad, agua y trámites civiles.',
+    icon: 'lucide:building-2',
+    accentClass: 'text-gov-teal',
+  },
+};
+
+// Earliest lastVerified date across all contacts (for footer transparency note)
+const lastVerifiedDate = emergencyContacts
+  .map((c) => c.lastVerified)
+  .sort()
+  .at(0) ?? '2026-04-01';
+
+const formattedDate = new Intl.DateTimeFormat('es-HN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(new Date(lastVerifiedDate + 'T12:00:00'));
+---
+
+<Layout
+  title="Emergencias | Municipalidad de Bonito Oriental"
+  description="Números de emergencia, seguridad y servicios públicos de Bonito Oriental, Honduras."
+>
+  {/* ── Hero Banner ────────────────────────────────────────────────────────── */}
+  <section class="bg-red-600 px-4 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl text-center">
+      <div class="hero-enter flex justify-center">
+        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20">
+          <Icon name="lucide:siren" class="h-8 w-8 text-white" aria-hidden="true" />
+        </div>
+      </div>
+      <h1 class="hero-enter hero-enter-1 mt-5 text-3xl font-bold text-white md:text-5xl">
+        Contactos de Emergencia
+      </h1>
+      <p class="hero-enter hero-enter-2 mx-auto mt-4 max-w-2xl text-base text-white/75 leading-relaxed md:text-lg">
+        Bonito Oriental, Colón — Honduras. En caso de emergencia llama al
+        <a
+          href="tel:911"
+          class="font-bold text-white underline underline-offset-4 hover:text-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:rounded"
+          aria-label="Llamar al 911 — Sistema Nacional de Emergencias"
+        >
+          911
+        </a>
+        de inmediato.
+      </p>
+      <div class="hero-enter hero-enter-3 mt-8 flex flex-wrap justify-center gap-3">
+        <a
+          href="tel:911"
+          class="flex min-h-[56px] items-center gap-2 rounded-xl bg-white px-8 py-3 text-base font-bold text-red-600 shadow-lg hover:bg-red-50 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-red-600"
+          aria-label="Llamar al 911 — Sistema Nacional de Emergencias"
+        >
+          <Icon name="lucide:phone-call" class="h-5 w-5 shrink-0" aria-hidden="true" />
+          Llamar al 911
+        </a>
+        <a
+          href="#seguridad"
+          class="flex min-h-[56px] items-center gap-2 rounded-xl border border-white/30 px-8 py-3 text-base font-semibold text-white hover:bg-white/10 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        >
+          Ver todos los contactos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Main content ────────────────────────────────────────────────────────── */}
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-20">
+
+    {/* ── Vida Crítica — Hero Cards ──────────────────────────────────────────── */}
+    {(() => {
+      const cat = 'vida-critica' as EmergencyCategory;
+      const meta = categoryMeta[cat];
+      const contacts = grouped[cat];
+      if (contacts.length === 0) return null;
+      return (
+        <section aria-labelledby="section-vida-critica">
+          <div class="mb-8 flex items-start gap-4">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-red-100">
+              <Icon name={meta.icon} class="h-6 w-6 text-red-600" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 id="section-vida-critica" class={`text-2xl font-bold md:text-3xl ${meta.accentClass}`}>
+                {meta.label}
+              </h2>
+              <p class="mt-1 text-sm text-text-secondary">{meta.description}</p>
+            </div>
+          </div>
+          <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            {contacts.map((contact) => (
+              <li>
+                <EmergencyContactCard contact={contact} size="hero" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })()}
+
+    {/* ── Seguridad ─────────────────────────────────────────────────────────── */}
+    {(() => {
+      const cat = 'seguridad' as EmergencyCategory;
+      const meta = categoryMeta[cat];
+      const contacts = grouped[cat];
+      if (contacts.length === 0) return null;
+      return (
+        <section id="seguridad" aria-labelledby="section-seguridad">
+          <div class="mb-8 flex items-start gap-4">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-bg-warm">
+              <Icon name={meta.icon} class="h-6 w-6 text-gov-navy" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 id="section-seguridad" class={`text-2xl font-bold md:text-3xl ${meta.accentClass}`}>
+                {meta.label}
+              </h2>
+              <p class="mt-1 text-sm text-text-secondary">{meta.description}</p>
+            </div>
+          </div>
+          <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            {contacts.map((contact) => (
+              <li>
+                <EmergencyContactCard contact={contact} size="standard" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })()}
+
+    {/* ── Salud ─────────────────────────────────────────────────────────────── */}
+    {(() => {
+      const cat = 'salud' as EmergencyCategory;
+      const meta = categoryMeta[cat];
+      const contacts = grouped[cat];
+      if (contacts.length === 0) return null;
+      return (
+        <section id="salud" aria-labelledby="section-salud">
+          <div class="mb-8 flex items-start gap-4">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-muni-green/10">
+              <Icon name={meta.icon} class="h-6 w-6 text-muni-green" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 id="section-salud" class={`text-2xl font-bold md:text-3xl ${meta.accentClass}`}>
+                {meta.label}
+              </h2>
+              <p class="mt-1 text-sm text-text-secondary">
+                {meta.description}{' '}
+                <a
+                  href="/mapa#salud"
+                  class="font-medium text-gov-teal underline underline-offset-4 hover:text-gov-navy transition-colors duration-200 focus-visible:outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-gov-teal"
+                >
+                  Ver mapa de centros de salud
+                </a>
+              </p>
+            </div>
+          </div>
+          <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            {contacts.map((contact) => (
+              <li>
+                <EmergencyContactCard contact={contact} size="standard" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })()}
+
+    {/* ── Servicios Públicos ────────────────────────────────────────────────── */}
+    {(() => {
+      const cat = 'servicios-publicos' as EmergencyCategory;
+      const meta = categoryMeta[cat];
+      const contacts = grouped[cat];
+      if (contacts.length === 0) return null;
+      return (
+        <section id="servicios-publicos" aria-labelledby="section-servicios">
+          <div class="mb-8 flex items-start gap-4">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gov-teal/10">
+              <Icon name={meta.icon} class="h-6 w-6 text-gov-teal" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 id="section-servicios" class={`text-2xl font-bold md:text-3xl ${meta.accentClass}`}>
+                {meta.label}
+              </h2>
+              <p class="mt-1 text-sm text-text-secondary">{meta.description}</p>
+            </div>
+          </div>
+          <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+            {contacts.map((contact) => (
+              <li>
+                <EmergencyContactCard contact={contact} size="standard" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      );
+    })()}
+
+  </div>
+
+  {/* ── Transparency Footer Note ─────────────────────────────────────────────── */}
+  <aside class="border-t border-border-warm bg-bg-warm px-4 py-8" aria-label="Nota de verificación de datos">
+    <div class="mx-auto max-w-7xl">
+      <p class="flex items-start gap-2 text-xs text-text-tertiary">
+        <Icon name="lucide:info" class="mt-0.5 h-4 w-4 shrink-0 text-gov-teal" aria-hidden="true" />
+        <span>
+          Información verificada al <time datetime={lastVerifiedDate}>{formattedDate}</time>.
+          Si detectás un número desactualizado, por favor escríbenos a{' '}
+          <a
+            href="/contact"
+            class="font-medium text-gov-teal underline underline-offset-4 hover:text-gov-navy transition-colors duration-200"
+          >
+            nuestro formulario de contacto
+          </a>.
+        </span>
+      </p>
+    </div>
+  </aside>
+</Layout>

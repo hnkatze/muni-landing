@@ -1,0 +1,126 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { EmergencyContact } from '../data/emergency-contacts';
+
+interface Props {
+  contact: EmergencyContact;
+  size?: 'hero' | 'standard';
+}
+
+const { contact, size = 'standard' } = Astro.props;
+const { name, phone, whatsapp, icon, hours, notes, location } = contact;
+
+const isHero = size === 'hero';
+---
+
+{isHero ? (
+  <!-- Hero card — vida-crítica: red bg, large tap target, URGENTE badge -->
+  <div class="reveal flex flex-col rounded-2xl bg-red-600 p-6 text-white shadow-lg shadow-red-900/30 transition-shadow duration-300 hover:shadow-xl hover:shadow-red-900/40">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20">
+          <Icon name={icon} class="h-6 w-6 text-white" aria-hidden="true" />
+        </div>
+        <div>
+          <span class="inline-flex items-center rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest text-white">
+            URGENTE
+          </span>
+          <h3 class="mt-1 text-base font-bold leading-tight">{name}</h3>
+        </div>
+      </div>
+    </div>
+
+    {location && (
+      <p class="mt-3 flex items-center gap-1.5 text-xs text-white/70">
+        <Icon name="lucide:map-pin" class="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+        {location}
+      </p>
+    )}
+
+    {hours && (
+      <p class="mt-1 flex items-center gap-1.5 text-xs text-white/70">
+        <Icon name="lucide:clock" class="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+        {hours}
+      </p>
+    )}
+
+    {notes && (
+      <p class="mt-2 text-xs leading-relaxed text-white/60">{notes}</p>
+    )}
+
+    <!-- Primary CTA: Call — min 56px tap target for hero -->
+    <a
+      href={`tel:${phone}`}
+      class="mt-4 flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-lg font-bold text-red-600 transition-colors duration-200 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-red-600"
+      aria-label={`Llamar a ${name} al ${phone}`}
+    >
+      <Icon name="lucide:phone-call" class="h-5 w-5 shrink-0" aria-hidden="true" />
+      {phone}
+    </a>
+
+    {whatsapp && (
+      <a
+        href={`https://wa.me/${whatsapp}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-2 flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/30 px-4 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        aria-label={`Contactar a ${name} por WhatsApp`}
+      >
+        <Icon name="lucide:message-circle" class="h-4 w-4 shrink-0" aria-hidden="true" />
+        WhatsApp
+      </a>
+    )}
+  </div>
+) : (
+  <!-- Standard card — seguridad / salud / servicios-públicos -->
+  <div class="reveal flex flex-col rounded-2xl border border-border-warm bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
+    <div class="flex items-start gap-3">
+      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-bg-warm">
+        <Icon name={icon} class="h-5 w-5 text-gov-navy" aria-hidden="true" />
+      </div>
+      <div class="min-w-0 flex-1">
+        <h3 class="text-sm font-bold text-text-primary leading-snug">{name}</h3>
+        {location && (
+          <p class="mt-0.5 flex items-center gap-1 text-xs text-text-tertiary">
+            <Icon name="lucide:map-pin" class="h-3 w-3 shrink-0" aria-hidden="true" />
+            {location}
+          </p>
+        )}
+      </div>
+    </div>
+
+    {hours && (
+      <p class="mt-2.5 flex items-center gap-1.5 text-xs text-text-secondary">
+        <Icon name="lucide:clock" class="h-3.5 w-3.5 shrink-0 text-gov-teal" aria-hidden="true" />
+        {hours}
+      </p>
+    )}
+
+    {notes && (
+      <p class="mt-1.5 text-xs leading-relaxed text-text-tertiary">{notes}</p>
+    )}
+
+    <!-- Primary CTA: Call — min 44px tap target -->
+    <a
+      href={`tel:${phone}`}
+      class="mt-4 flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-gov-navy px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-gov-navy-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy focus-visible:ring-offset-2"
+      aria-label={`Llamar a ${name} al ${phone}`}
+    >
+      <Icon name="lucide:phone" class="h-4 w-4 shrink-0" aria-hidden="true" />
+      {phone}
+    </a>
+
+    {whatsapp && (
+      <a
+        href={`https://wa.me/${whatsapp}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-2 flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-gov-navy/20 px-4 py-2.5 text-sm font-medium text-gov-navy transition-colors duration-200 hover:bg-bg-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gov-navy"
+        aria-label={`Contactar a ${name} por WhatsApp`}
+      >
+        <Icon name="lucide:message-circle" class="h-4 w-4 shrink-0" aria-hidden="true" />
+        WhatsApp
+      </a>
+    )}
+  </div>
+)}
