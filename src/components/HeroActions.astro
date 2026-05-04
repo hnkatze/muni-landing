@@ -11,10 +11,10 @@ const actions = [
 ] as const;
 ---
 
-<div class="hero-enter hero-enter-5 w-full max-w-3xl mx-auto px-4 pb-8">
+<section class="hero-enter hero-enter-5 mx-auto w-full max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-12 sm:pb-20 lg:px-8">
   <nav aria-label="Acciones rápidas">
     <ul
-      class="grid grid-cols-3 gap-3 sm:grid-cols-6"
+      class="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-6"
       role="list"
     >
       {actions.map((action) => (
@@ -22,17 +22,24 @@ const actions = [
           <a
             href={action.href}
             class:list={[
-              'flex min-h-[56px] flex-col items-center justify-center gap-1.5 rounded-2xl border px-2 py-3 text-center transition-all duration-200',
+              'group flex min-h-[112px] flex-col items-center justify-center gap-3 rounded-2xl border px-4 py-5 text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
               action.accent
-                ? 'border-red-200 bg-red-50 text-red-700 hover:bg-red-100 hover:border-red-300 hover:shadow-sm'
-                : 'border-border-warm bg-white/80 text-gov-navy hover:bg-bg-warm hover:border-gov-navy/20 hover:shadow-sm',
+                ? 'border-red-200 bg-red-50 text-red-700 hover:bg-red-100 hover:border-red-300'
+                : 'border-border-warm bg-white text-gov-navy hover:bg-bg-warm hover:border-gov-navy/20',
             ]}
           >
-            <Icon name={action.icon} class="h-5 w-5 shrink-0" aria-hidden="true" />
-            <span class="text-xs font-semibold leading-tight">{action.label}</span>
+            <Icon
+              name={action.icon}
+              class:list={[
+                'h-7 w-7 shrink-0 transition-transform duration-200 group-hover:scale-110',
+                action.accent ? 'text-red-600' : 'text-muni-gold',
+              ]}
+              aria-hidden="true"
+            />
+            <span class="text-sm font-semibold leading-tight">{action.label}</span>
           </a>
         </li>
       ))}
     </ul>
   </nav>
-</div>
+</section>
